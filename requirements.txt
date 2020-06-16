@@ -1,0 +1,4 @@
+dataclasses==0.7; python_version == "3.6"
+django-oauth-toolkit>=1.2,<1.4
+djangorestframework>=3.9.2,<3.12
+pillow==7.1.2

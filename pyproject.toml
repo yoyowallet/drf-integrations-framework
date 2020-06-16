@@ -1,0 +1,62 @@
+# NOTE: you have to use single-quoted strings in TOML for regular expressions.
+# It's the equivalent of r-strings in Python.  Multiline strings are treated as
+# verbose regular expressions by Black.  Use [ ] to denote a significant space
+# character.
+
+[build-system]
+requires = [
+    "setuptools >= 35.0.2",
+    "setuptools_scm >= 2.0.0, <3"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+target-version = ["py36"]
+line-length = 99
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 99
+known_standard_library = "dataclasses,typing"
+known_first_party = "drf_integrations,example,tests"
+default_section = "THIRDPARTY"
+skip_glob = "venv/*"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = True
+envlist =
+       {py36,py37}-django22,
+       {py36,py37,py38}-django30,
+
+[testenv]
+setenv =
+	PYTHONPATH = {toxinidir}
+	PYTHONWARNINGS = all
+	PYTHONDONTWRITEBYTECODE = 1
+deps =
+	-rrequirements-test.txt
+	django22: Django>=2.2,<3
+	django30: Django>=3.0,<3.1
+commands = pytest -vv --nomigrations
+"""
