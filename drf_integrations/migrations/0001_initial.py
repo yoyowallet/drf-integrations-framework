@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ("updated", models.DateTimeField(auto_now=True)),
                 ("is_internal_only", models.BooleanField(default=False)),
             ],
-            options={"abstract": False, "swappable": "OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL"},
+            options={"abstract": False},
         ),
         migrations.CreateModel(
             name="Application",
@@ -116,7 +116,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False, "swappable": "OAUTH2_PROVIDER_APPLICATION_MODEL"},
+            options={"abstract": False},
         ),
         migrations.CreateModel(
             name="RefreshToken",
@@ -152,7 +152,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False, "swappable": "OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL"},
+            options={"abstract": False},
         ),
         migrations.CreateModel(
             name="Grant",
@@ -190,7 +190,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False, "swappable": "OAUTH2_PROVIDER_GRANT_MODEL"},
+            options={"abstract": False},
         ),
         migrations.AddField(
             model_name="accesstoken",
