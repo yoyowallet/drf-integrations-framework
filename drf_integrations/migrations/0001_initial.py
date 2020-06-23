@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ("oauth2_provider", "0001_initial"),
     ]
 
     operations = [
@@ -164,16 +165,6 @@ class Migration(migrations.Migration):
                 ("scope", models.TextField(blank=True)),
                 ("created", models.DateTimeField(auto_now_add=True)),
                 ("updated", models.DateTimeField(auto_now=True)),
-                ("code_challenge", models.CharField(blank=True, default="", max_length=128)),
-                (
-                    "code_challenge_method",
-                    models.CharField(
-                        blank=True,
-                        choices=[("plain", "plain"), ("S256", "S256")],
-                        default="",
-                        max_length=10,
-                    ),
-                ),
                 (
                     "application",
                     models.ForeignKey(
