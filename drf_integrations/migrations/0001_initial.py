@@ -6,6 +6,8 @@ import oauth2_provider.generators
 from django.conf import settings
 from django.db import migrations, models
 
+from drf_integrations.models import get_application_installation_install_attribute_name
+
 
 class Migration(migrations.Migration):
     initial = True
@@ -235,7 +237,10 @@ class Migration(migrations.Migration):
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 ("deleted_at", models.DateTimeField(editable=False, null=True)),
                 ("config", django.contrib.postgres.fields.jsonb.JSONField(null=True)),
-                ("organisation_id", models.PositiveIntegerField()),
+                (
+                    get_application_installation_install_attribute_name(),
+                    models.PositiveIntegerField(),
+                ),
                 (
                     "application",
                     models.ForeignKey(
@@ -248,7 +253,9 @@ class Migration(migrations.Migration):
             options={
                 "abstract": False,
                 "swappable": "INTEGRATIONS_APPLICATION_INSTALLATION_MODEL",
-                "unique_together": {("application", "organisation_id")},
+                "unique_together": {
+                    ("application", get_application_installation_install_attribute_name())
+                },
             },
         ),
         migrations.AddConstraint(
