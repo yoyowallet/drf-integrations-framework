@@ -61,7 +61,7 @@ class AbstractApplication(OAuthAbstractApplication):
 
     objects = managers.ApplicationManager()
 
-    class Meta:
+    class Meta(OAuthAbstractApplication.Meta):
         abstract = True
         constraints = [
             models.CheckConstraint(
@@ -224,7 +224,7 @@ class AbstractAccessToken(OAuthAbstractAccessToken):
 
     objects = managers.AccessTokenManager()
 
-    class Meta:
+    class Meta(OAuthAbstractAccessToken.Meta):
         abstract = True
 
 
@@ -234,9 +234,7 @@ class AccessToken(AbstractAccessToken):
 
 
 class AbstractRefreshToken(OAuthAbstractRefreshToken):
-    objects = managers.AccessTokenManager()
-
-    class Meta:
+    class Meta(OAuthAbstractRefreshToken.Meta):
         abstract = True
 
 
@@ -246,7 +244,7 @@ class RefreshToken(AbstractRefreshToken):
 
 
 class AbstractGrant(OAuthAbstractGrant):
-    class Meta:
+    class Meta(OAuthAbstractGrant.Meta):
         abstract = True
 
 

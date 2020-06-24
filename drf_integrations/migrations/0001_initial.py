@@ -7,6 +7,14 @@ from django.conf import settings
 from django.db import migrations, models
 
 from drf_integrations.models import get_application_installation_install_attribute_name
+from drf_integrations.utils import package_semver
+
+
+def get_oauth_dependencies():
+    # Support versions before squashed migrations (< 1.3)
+    if package_semver("django-oauth-toolkit") < (1, 3):
+        return [("oauth2_provider", "0006_auto_20171214_2232")]
+    return [("oauth2_provider", "0001_initial")]
 
 
 class Migration(migrations.Migration):
@@ -14,8 +22,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("oauth2_provider", "0001_initial"),
-    ]
+    ] + get_oauth_dependencies()
 
     operations = [
         migrations.CreateModel(
@@ -153,7 +160,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False},
+            options={"abstract": False, "unique_together": {("token", "revoked")}},
         ),
         migrations.CreateModel(
             name="Grant",
