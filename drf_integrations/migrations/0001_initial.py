@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ("scope", models.TextField(blank=True)),
                 ("created", models.DateTimeField(auto_now_add=True)),
                 ("updated", models.DateTimeField(auto_now=True)),
-                ("is_internal_only", models.BooleanField(default=False)),
+                ("is_internal_only", models.BooleanField(default=False, editable=False)),
             ],
             options={"abstract": False},
         ),

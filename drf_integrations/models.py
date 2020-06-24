@@ -220,7 +220,7 @@ class Application(AbstractApplication):
 
 
 class AbstractAccessToken(OAuthAbstractAccessToken):
-    is_internal_only = models.BooleanField(default=False)
+    is_internal_only = models.BooleanField(default=False, editable=False)
 
     objects = managers.AccessTokenManager()
 
