@@ -1,4 +1,5 @@
 import logging
+from collections import OrderedDict
 from typing import TYPE_CHECKING, Optional, Tuple
 
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
@@ -68,3 +69,15 @@ class IntegrationOAuth2Authentication(OAuth2Authentication):
             request.auth_context = installation.get_context()
 
         return result
+
+    def authenticate_header(self, request):
+        """
+        Bearer is the only finalized type currently.
+
+        Method overriden to avoid issue with request.oauth2_error not being set.
+        """
+        www_authenticate_attributes = OrderedDict([("realm", self.www_authenticate_realm)])
+        www_authenticate_attributes.update(getattr(request, "oauth2_error", dict()))
+        return "Bearer {attributes}".format(
+            attributes=self._dict_to_string(www_authenticate_attributes),
+        )
