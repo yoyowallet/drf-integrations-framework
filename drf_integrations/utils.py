@@ -1,7 +1,5 @@
 from typing import Any, Iterable, Iterator, List, Optional, Union
 
-import pkg_resources
-
 AnyString = Union[str, Iterable[Any]]
 
 
@@ -45,8 +43,3 @@ def iter_split_string(string: Optional[AnyString], separator: str = ",") -> Iter
 
     else:
         raise TypeError("Cannot split string of {!r}".format(type(string)))
-
-
-def package_semver(package_name: str):
-    version = pkg_resources.get_distribution(package_name).version
-    return tuple(map(int, version.split(".")))
