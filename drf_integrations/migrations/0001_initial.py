@@ -6,12 +6,15 @@ import oauth2_provider.generators
 from django.conf import settings
 from django.db import migrations, models
 
+from drf_integrations.models import get_application_installation_install_attribute_name
+
 
 class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ("oauth2_provider", "0006_auto_20171214_2232"),
     ]
 
     operations = [
@@ -24,7 +27,7 @@ class Migration(migrations.Migration):
                 ("scope", models.TextField(blank=True)),
                 ("created", models.DateTimeField(auto_now_add=True)),
                 ("updated", models.DateTimeField(auto_now=True)),
-                ("is_internal_only", models.BooleanField(default=False)),
+                ("is_internal_only", models.BooleanField(default=False, editable=False)),
             ],
             options={"abstract": False, "swappable": "OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL"},
         ),
@@ -150,7 +153,11 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False, "swappable": "OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL"},
+            options={
+                "abstract": False,
+                "unique_together": {("token", "revoked")},
+                "swappable": "OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL",
+            },
         ),
         migrations.CreateModel(
             name="Grant",
@@ -162,16 +169,6 @@ class Migration(migrations.Migration):
                 ("scope", models.TextField(blank=True)),
                 ("created", models.DateTimeField(auto_now_add=True)),
                 ("updated", models.DateTimeField(auto_now=True)),
-                ("code_challenge", models.CharField(blank=True, default="", max_length=128)),
-                (
-                    "code_challenge_method",
-                    models.CharField(
-                        blank=True,
-                        choices=[("plain", "plain"), ("S256", "S256")],
-                        default="",
-                        max_length=10,
-                    ),
-                ),
                 (
                     "application",
                     models.ForeignKey(
@@ -235,7 +232,10 @@ class Migration(migrations.Migration):
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 ("deleted_at", models.DateTimeField(editable=False, null=True)),
                 ("config", django.contrib.postgres.fields.jsonb.JSONField(null=True)),
-                ("organisation_id", models.PositiveIntegerField()),
+                (
+                    get_application_installation_install_attribute_name(),
+                    models.PositiveIntegerField(),
+                ),
                 (
                     "application",
                     models.ForeignKey(
@@ -248,7 +248,9 @@ class Migration(migrations.Migration):
             options={
                 "abstract": False,
                 "swappable": "INTEGRATIONS_APPLICATION_INSTALLATION_MODEL",
-                "unique_together": {("application", "organisation_id")},
+                "unique_together": {
+                    ("application", get_application_installation_install_attribute_name())
+                },
             },
         ),
         migrations.AddConstraint(

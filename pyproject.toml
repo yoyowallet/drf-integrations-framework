@@ -42,7 +42,7 @@ default_section = "THIRDPARTY"
 skip_glob = "venv/*"
 
 [tool.tox]
-legacy_tox_ini = """
+legacy_tox_ini = '''
 [tox]
 isolated_build = True
 envlist =
@@ -59,4 +59,4 @@ deps =
 	django22: Django>=2.2,<3
 	django30: Django>=3.0,<3.1
 commands = pytest -vv --nomigrations
-"""
+'''

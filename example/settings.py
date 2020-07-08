@@ -36,8 +36,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "drf_integrations",
+    # Integration required apps
     "oauth2_provider",
+    "drf_integrations",
     "example.drf_integrations_example",
 ]
 
@@ -115,7 +116,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-# Custom setup
+# Integrations setup
 
 ROOT_URLCONF = "example.urls"
 

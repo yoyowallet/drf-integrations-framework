@@ -114,7 +114,7 @@ class Migration(migrations.Migration):
                 ("integration_name", models.TextField()),
                 ("integration_user_id", models.TextField()),
                 (
-                    "integration_user",
+                    "user",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL
                     ),
@@ -151,8 +151,9 @@ class Migration(migrations.Migration):
                 ),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("amount", models.IntegerField(editable=False)),
+                ("currency", models.CharField(max_length=3, editable=False)),
                 (
-                    "user",
+                    "integration_user",
                     models.ForeignKey(
                         editable=False,
                         on_delete=django.db.models.deletion.PROTECT,

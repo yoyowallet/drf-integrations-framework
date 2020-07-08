@@ -17,7 +17,7 @@ between the source/destiny of events, how these requests are authenticated and t
 ## Installation
 Install using `pip` (coming soon to PyPI):
 ```bash
-pip install https://github.com/yoyowallet/django-integrations-framework/archive/0.1.0.tar.gz
+pip install https://github.com/yoyowallet/drf-integrations-framework/archive/0.1.0.tar.gz
 ```
 
 Add the apps to your `INSTALLED_APPS`:
@@ -104,6 +104,9 @@ There are some features that DRF Integrations Framework provides out of the box.
 - Automatic form validation for integrations that have one.
 - An authentication backend for local OAuth2 integrations
 (`drf_integrations.auth_backends.IntegrationOAuth2Authentication`).
+
+## Changelog
+See [CHANGELOG.md](CHANGELOG.md)
 
 ## Authors
 DRF Integrations Framework is an original idea by [@jianyuan](https://github.com/jianyuan), developed and maintained by
