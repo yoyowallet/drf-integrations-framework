@@ -1,6 +1,7 @@
 # DRF Integrations Framework
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+![yoyowallet](https://circleci.com/gh/yoyowallet/drf-integrations-framework.svg?style=shield)
 
 DRF Integrations Framework is a toolkit that plugs in to [Django REST Framework](https://www.django-rest-framework.org/)
 and simplifies the management of third party integrations. If you find yourself connecting to multiple services with
