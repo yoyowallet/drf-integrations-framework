@@ -29,3 +29,10 @@ def test_iter_split_string(values):
 )
 def test_split_string(values):
     assert utils.split_string(values) == ["0", "1", "2", "3", "4"]
+
+
+@pytest.mark.parametrize(
+    "obj,classes,expected", [(1, [int], True), (1, [int, str], False), (1, [], True)],
+)
+def test_is_instance_of_all(obj, classes, expected):
+    assert utils.is_instance_of_all(obj, classes) == expected
