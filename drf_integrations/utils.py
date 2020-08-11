@@ -47,7 +47,7 @@ def iter_split_string(string: Optional[AnyString], separator: str = ",") -> Iter
 
 def is_instance_of_all(obj, classes: Iterable[type]) -> bool:
     """
-    Returns `True` if the *object* arugment is an instance of all of the
+    Returns `True` if the *obj* argument is an instance of all of the
     classes in the *classes* argument.
     """
     return all(isinstance(obj, classinfo) for classinfo in classes)
