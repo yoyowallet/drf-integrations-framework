@@ -52,8 +52,8 @@ def test_get_all(get_integration):
 
 def test_get_all_with_implements(get_integration):
     """
-    Calling get_all with `implements` correctly returns all, local or non-local
-    integration sets that inherit from all the classes in `implements`.
+    Calling ``get_all`` with ``implements`` correctly returns all, local or non-local
+    integration sets that inherit from all the classes in ``implements``.
     """
     registry = Registry()
     integration1 = get_integration(is_local=True, register=False)
