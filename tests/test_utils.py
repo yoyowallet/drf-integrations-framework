@@ -1,3 +1,5 @@
+from contextlib import ExitStack as does_not_raise
+
 import pytest
 
 from drf_integrations import utils
@@ -32,7 +34,14 @@ def test_split_string(values):
 
 
 @pytest.mark.parametrize(
-    "obj,classes,expected", [(1, [int], True), (1, [int, str], False), (1, [], True)],
+    "obj,classes,expected,expectation",
+    [
+        (1, [int], True, does_not_raise()),
+        (1, [int, str], False, does_not_raise()),
+        (1, [], True, does_not_raise()),
+        (1, [1], False, pytest.raises(TypeError)),
+    ],
 )
-def test_is_instance_of_all(obj, classes, expected):
-    assert utils.is_instance_of_all(obj, classes) == expected
+def test_is_instance_of_all(obj, classes, expected, expectation):
+    with expectation:
+        assert utils.is_instance_of_all(obj, classes) == expected

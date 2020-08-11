@@ -63,6 +63,8 @@ def test_get_all_with_implements(get_integration):
     assert registry.get_all(TestLocalIntegration) == {integration1()}
     assert registry.get_all(TestInternalIntegration) == {integration2()}
     assert registry.get_all(TestInternalIntegration, TestLocalIntegration) == set()
+    with pytest.raises(TypeError):
+        registry.get_all(integration2())
 
 
 def test_get_urls():

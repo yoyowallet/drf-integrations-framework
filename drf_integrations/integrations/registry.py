@@ -30,6 +30,8 @@ class Registry:
         """
         Get all integrations. If `implements` is provided, only return integrations
         that are instances of **all** of the classes in `implements`.
+
+        :raises TypeError: If any element of implements is not a type.
         """
         if is_local is not None:
             integrations = {
