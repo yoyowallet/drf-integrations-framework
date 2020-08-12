@@ -43,3 +43,15 @@ def iter_split_string(string: Optional[AnyString], separator: str = ",") -> Iter
 
     else:
         raise TypeError("Cannot split string of {!r}".format(type(string)))
+
+
+def is_instance_of_all(obj, classes: Iterable[type]) -> bool:
+    """
+    Returns ``True`` if the ``obj`` argument is an instance of all of the
+    classes in the ``classes`` argument.
+
+    :raises TypeError: If any element of classes is not a type.
+    """
+    if any(not isinstance(classinfo, type) for classinfo in classes):
+        raise TypeError("classes must contain types")
+    return all(isinstance(obj, classinfo) for classinfo in classes)

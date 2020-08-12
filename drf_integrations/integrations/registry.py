@@ -1,10 +1,11 @@
 import inspect
-from typing import Dict, List, Optional, Set, Type, Union
+from typing import Dict, Iterable, List, Optional, Set, Type, Union
 
 from django.urls import include, path
 
 from drf_integrations.exceptions import ImproperlyConfigured
 from drf_integrations.integrations.base import BaseIntegration
+from drf_integrations.utils import is_instance_of_all
 
 
 class Registry:
@@ -23,11 +24,28 @@ class Registry:
         self.integrations[integration_cls.name] = integration_cls(**kwargs)
         return self.integrations[integration_cls.name]
 
-    def get_all(self, *, is_local: Optional[bool] = None) -> Set[BaseIntegration]:
-        """Get all integrations."""
+    def get_all(
+        self, *implements: Iterable[type], is_local: Optional[bool] = None
+    ) -> Set[BaseIntegration]:
+        """
+        Get all integrations. If ``implements`` is provided, only return integrations
+        that are instances of **all** of the classes in ``implements``.
+
+        :raises TypeError: If any element of ``implements`` is not a type.
+        """
         if is_local is not None:
-            return {value for value in self.integrations.values() if value.is_local is is_local}
-        return set(self.integrations.values())
+            integrations = {
+                value for value in self.integrations.values() if value.is_local is is_local
+            }
+        else:
+            integrations = set(self.integrations.values())
+
+        # Filter by implements
+        return set(
+            integration
+            for integration in integrations
+            if is_instance_of_all(integration, implements)
+        )
 
     def get(self, name_or_class: Union[str, Type[BaseIntegration]]) -> BaseIntegration:
         """

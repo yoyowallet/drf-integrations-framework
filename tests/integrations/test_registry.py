@@ -4,6 +4,7 @@ from django.urls.resolvers import RegexPattern
 
 from drf_integrations.integrations import Registry
 from drf_integrations.integrations.base import BaseIntegration
+from tests.integration_samples import TestInternalIntegration, TestLocalIntegration
 
 
 def test_register(get_integration):
@@ -47,6 +48,23 @@ def test_get_all(get_integration):
     assert registry.get_all() == {integration1(), integration2()}
     assert registry.get_all(is_local=True) == {integration1()}
     assert registry.get_all(is_local=False) == {integration2()}
+
+
+def test_get_all_with_implements(get_integration):
+    """
+    Calling ``get_all`` with ``implements`` correctly returns all, local or non-local
+    integration sets that inherit from all the classes in ``implements``.
+    """
+    registry = Registry()
+    integration1 = get_integration(is_local=True, register=False)
+    registry.register(integration1)
+    integration2 = get_integration(is_local=False, register=False)
+    registry.register(integration2)
+    assert registry.get_all(TestLocalIntegration) == {integration1()}
+    assert registry.get_all(TestInternalIntegration) == {integration2()}
+    assert registry.get_all(TestInternalIntegration, TestLocalIntegration) == set()
+    with pytest.raises(TypeError):
+        registry.get_all(integration2())
 
 
 def test_get_urls():
