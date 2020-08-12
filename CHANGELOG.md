@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ## Added
 - Add optional var-positional `implements` parameter to `Registry.get_all`.
+- Add var-keyword argument `**kwargs` to `BaseIntegration.get_installation_lookup_from_request`
+
+## Changed
+- Make the `application` argument of `BaseIntegration.get_installation_lookup_from_request` keyword-only.
+
 
 ## [0.2.0] - 2020-08-03
 ### Added
