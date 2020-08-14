@@ -1,3 +1,3 @@
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 
 default_app_config = "drf_integrations.apps.DRFIntegrationsConfig"
