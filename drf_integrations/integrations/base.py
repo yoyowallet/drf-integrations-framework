@@ -215,7 +215,7 @@ class BaseIntegration:
 
     @classmethod
     def get_installation_lookup_from_request(
-        cls, request: "Request", application: "Optional[models.Application]" = None
+        cls, request: "Request", *, application: "Optional[models.Application]" = None, **kwargs
     ) -> Dict:
         """
         Return a lookup filter suitable for models that subclass
