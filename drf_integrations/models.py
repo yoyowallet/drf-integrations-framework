@@ -290,7 +290,7 @@ def _get_application_installation_class():
                     f"{install_attribute_name}"
                 )
 
-            return f"installation for {install_attribute_name} without integration"
+            return f"installation for {install_attribute_name} without valid integration"
 
         def get_config(self) -> Dict:
             return self.config or {}
