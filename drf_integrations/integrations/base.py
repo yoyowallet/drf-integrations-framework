@@ -149,6 +149,13 @@ class BaseIntegration:
         return self.name
 
     @property
+    def namespace(self) -> str:
+        """
+        The URL namespace in which URLs for this integration should be included.
+        """
+        return f"integration-{self.name}"
+
+    @property
     def default_scopes(self) -> List[str]:
         """
         List of default scopes for the integration, if any.
