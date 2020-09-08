@@ -74,11 +74,13 @@ class Registry:
             # Integration URLs
             integration_urls = integration_cls.get_urls()
             if integration_urls:
-                namespace = f"integration-{name}"
                 urls += [
                     path(
                         f"{basepath}{name}/",
-                        include((integration_urls, namespace), namespace=namespace),
+                        include(
+                            (integration_urls, integration_cls.namespace),
+                            namespace=integration_cls.namespace,
+                        ),
                     )
                 ]
         return urls
