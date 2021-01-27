@@ -270,7 +270,7 @@ def _get_application_installation_class():
             on_delete=models.PROTECT,
             related_name="installations",
         )
-        config = fields.JSONField(null=True)
+        config = fields.JSONField(null=True, blank=True)
 
         objects = managers.ApplicationInstallationQuerySet.as_manager()
 
