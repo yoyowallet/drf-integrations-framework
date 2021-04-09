@@ -36,6 +36,9 @@ class ApplicationInstallationForm(forms.ModelForm):
 
         config = self.instance.get_config()
 
+        # An empty string means default api_client_name. Since django treats null and
+        # blank equally any null values are rendered as default api_client_name. To get
+        # around this we add an option to be used as null.
         self.fields['api_client_name'].choices = [('-', '-')] + self.fields['api_client_name'].choices
 
         if self.initial.get('api_client_name') is None:
@@ -57,6 +60,9 @@ class ApplicationInstallationForm(forms.ModelForm):
     def clean(self):
         # Clean turns '' into None
         is_default = self.data['api_client_name'] == ''
+        # Incoming empty string values are transformed to None by the clean method.
+        # Thus we track if we have an incoming empty string for the default
+        # api_client_name and restore the value after clean.
         data = super().clean()
 
         if data['api_client_name'] == '-':
