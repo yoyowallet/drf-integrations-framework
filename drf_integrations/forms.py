@@ -62,11 +62,10 @@ class ApplicationInstallationForm(forms.ModelForm):
             self.initial["config"] = config
 
     def clean(self):
-        # Clean turns '' into None
-        is_default = self.data["api_client_name"] == ""
         # Incoming empty string values are transformed to None by the clean method.
         # Thus we track if we have an incoming empty string for the default
         # api_client_name and restore the value after clean.
+        is_default = self.data["api_client_name"] == ""
         data = super().clean()
 
         if data["api_client_name"] == "-":
