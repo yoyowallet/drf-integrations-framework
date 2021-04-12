@@ -18,7 +18,7 @@ between the source/destiny of events, how these requests are authenticated and t
 ## Installation
 Install using `pip` (coming soon to PyPI):
 ```bash
-pip install https://github.com/yoyowallet/drf-integrations-framework/archive/0.5.0.tar.gz
+pip install https://github.com/yoyowallet/drf-integrations-framework/archive/0.6.0.tar.gz
 ```
 
 Add the apps to your `INSTALLED_APPS`:
