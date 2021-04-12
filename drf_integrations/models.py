@@ -275,10 +275,16 @@ def _get_application_installation_class():
         objects = managers.ApplicationInstallationQuerySet.as_manager()
 
         def __str__(self):
-            return (
-                f"{self.application.get_integration_instance().name} installation for "
-                f"{getattr(self, get_application_installation_install_attribute_name())}"
-            )
+            try:
+                return (
+                    f"{self.application.get_integration_instance().name} installation for "
+                    f"{getattr(self, get_application_installation_install_attribute_name())}"
+                )
+            except ValueError:
+                return (
+                    f"Installation for "
+                    f"{getattr(self, get_application_installation_install_attribute_name())}"
+                )
 
         def get_config(self) -> Dict:
             return self.config or {}
