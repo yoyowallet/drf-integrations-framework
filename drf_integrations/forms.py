@@ -58,7 +58,7 @@ class ApplicationInstallationForm(forms.ModelForm):
         else:
             # Application has no integration
             # Render config field
-            self.fields["config"] = JSONField()
+            self.fields["config"] = JSONField(required=False)
             self.initial["config"] = config
 
     def clean(self):
