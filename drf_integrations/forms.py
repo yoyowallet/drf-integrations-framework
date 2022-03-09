@@ -54,7 +54,8 @@ class ApplicationInstallationForm(forms.ModelForm):
                 self.integration_config_fields.append(name)
                 self.fields[name] = field
                 self.initial[name] = config.get(name, field.initial)
-
+            # performs form-specific initialisations
+            self.integration_form.init_form_data(self)
         else:
             # Application has no integration
             # Render config field

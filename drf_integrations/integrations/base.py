@@ -27,6 +27,18 @@ class BaseIntegrationForm(forms.Form):
         return f"_{cls._get_install_attribute_id_name()[:-3]}"
 
     @classmethod
+    def init_form_data(cls, installation_form: forms.Form) -> Dict:
+        """
+        Performs form-specific initialisations. `installation_form` will be a form that
+        contains all the fields installation form does including fields from that form.
+
+        An example of this is when drf_integrations.forms.ApplicationInstallationForm
+        is submitted in admin. At that stage, its init method will be called, but not
+        the init method in this form. Instead, this hook is called, so that this
+        integration form can also init the fields based on the integration criteria.
+        """
+
+    @classmethod
     def clean_form_data(cls, installation_form: forms.Form) -> Dict:
         """
         Performs form-wide cleaning. `installation_form` will be a form that contains,
