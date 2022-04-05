@@ -18,7 +18,10 @@ jobs:
   test:
     needs: lint
     runs-on: ubuntu-latest
-    container: node:latest
+    container: circleci/python:3.6.10-node
+    env:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
     services:
       postgres:
         image: postgres:latest
@@ -47,6 +50,3 @@ jobs:
     - name: Test with pytest
       run: |
         poetry run pytest --nomigrations
-      env:
-        POSTGRES_HOST: postgres
-        POSTGRES_PORT: 5432
