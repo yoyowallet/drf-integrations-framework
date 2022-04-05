@@ -10,7 +10,7 @@ Framework will probably simplify that for you. DRF Integrations Framework will h
 between the source/destiny of events, how these requests are authenticated and the business logic associated to them.
 
 ## Requirements
-- Python 3.6+
+- Python 3.7+
 - Django 2.2+
 - Django REST Framework 3.9.2+
 - Django OAuth Toolkit 1.2+
