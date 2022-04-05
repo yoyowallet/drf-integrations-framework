@@ -16,7 +16,7 @@ between the source/destiny of events, how these requests are authenticated and t
 - Django OAuth Toolkit 1.2+
 
 ## Installation
-Install using `pip` (coming soon to PyPI):
+Install using `pip`:
 ```bash
 pip install https://github.com/yoyowallet/drf-integrations-framework/archive/0.6.1.tar.gz
 ```
