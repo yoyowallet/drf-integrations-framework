@@ -80,23 +80,3 @@ known_standard_library = "dataclasses,typing"
 known_first_party = "drf_integrations,example,tests"
 default_section = "THIRDPARTY"
 skip_glob = "venv/*"
-
-[tool.tox]
-legacy_tox_ini = '''
-[tox]
-isolated_build = True
-envlist =
-       {py36,py37}-django22,
-       {py36,py37,py38,py39,py310}-django30,
-
-[testenv]
-setenv =
-	PYTHONPATH = {toxinidir}
-	PYTHONWARNINGS = all
-	PYTHONDONTWRITEBYTECODE = 1
-deps =
-	-rrequirements-test.txt
-	django22: Django>=2.2,<3
-	django30: Django>=3.0,<4
-commands = pytest -vv --nomigrations
-'''
