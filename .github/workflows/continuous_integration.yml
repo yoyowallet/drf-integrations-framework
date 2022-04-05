@@ -19,6 +19,17 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
     container: node:latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: platform
+          POSTGRES_PASSWORD: ""
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     strategy:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10"]
@@ -36,28 +47,6 @@ jobs:
     - name: Test with pytest
       run: |
         poetry run pytest --nomigrations
-    services:
-      # label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres:latest
-        # service environment variables
-        # `POSTGRES_HOST` is `postgres`
-        env:
-          # optional (defaults to `postgres`)
-          POSTGRES_DB: platform
-          # required
-          POSTGRES_PASSWORD: ""
-          # optional (defaults to `5432`)
-          POSTGRES_PORT: 5432
-          # optional (defaults to `postgres`)
-          POSTGRES_USER: postgres
-        ports:
-          # maps tcp port 5432 on service container to the host
-          - 5432:5432
-        # set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+      env:
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: 5432
