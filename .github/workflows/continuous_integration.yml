@@ -18,13 +18,21 @@ jobs:
   test:
     needs: lint
     runs-on: ubuntu-latest
-    container: node:latest
     services:
       postgres:
         image: postgres:latest
         env:
+          DB_HOST: localhost
           POSTGRES_DB: platform
           POSTGRES_PASSWORD: ""
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
