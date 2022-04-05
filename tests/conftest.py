@@ -29,7 +29,7 @@ def pytest_configure(config):
                 "ENGINE": "django.db.backends.postgresql",
                 "NAME": "drfintegrations",
                 "USER": "postgres",
-                "PASSWORD": None,
+                "PASSWORD": "postgres",
                 "HOST": "localhost",
                 "PORT": "5432",
             }
