@@ -18,21 +18,16 @@ jobs:
   test:
     needs: lint
     runs-on: ubuntu-latest
-    container: circleci/python:3.6.10-node
-    env:
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
+    container: node:latest
     services:
       postgres:
         image: postgres:latest
         env:
           POSTGRES_DB: platform
           POSTGRES_PASSWORD: ""
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    env:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
     strategy:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10"]
@@ -42,6 +37,8 @@ jobs:
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
+    - name: Wait for DB
+      run: dockerize -wait tcp://localhost:5432 -timeout 1m
     - name: Build steps
       uses: ./.github/actions/drf-integrations-framework-build
       with:
