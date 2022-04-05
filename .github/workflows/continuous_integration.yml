@@ -23,7 +23,7 @@ jobs:
         image: postgres:latest
         env:
           DB_HOST: localhost
-          POSTGRES_DB: platform
+          POSTGRES_DB: drfintegrations
           POSTGRES_PASSWORD: postgres # Password required, can't be blank.
         ports:
           - 5432:5432
