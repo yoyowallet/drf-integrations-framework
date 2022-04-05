@@ -28,7 +28,7 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
     - name: Build steps
-      uses: ./.github/actions/drf-react-template-framework-build
+      uses: ./.github/actions/drf-integrations-framework-build
       with:
         python-version: ${{ matrix.python }}
         django-version: ${{ matrix.django }}
