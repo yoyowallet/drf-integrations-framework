@@ -1,15 +1,15 @@
-import datetime
-import logging
 from typing import TYPE_CHECKING, Type, Union
 
+import datetime
+import logging
 from django.db import models
 from django.utils import timezone
 from oauth2_provider.models import ApplicationManager as BaseApplicationManager
 from oauthlib.common import generate_token
 
 if TYPE_CHECKING:
-    from drf_integrations.models import Application
     from drf_integrations.integrations.base import BaseIntegration
+    from drf_integrations.models import Application
 
 logger = logging.getLogger(__name__)
 

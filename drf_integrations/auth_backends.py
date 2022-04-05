@@ -1,6 +1,6 @@
-import logging
 from typing import TYPE_CHECKING, Optional, Tuple
 
+import logging
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from rest_framework import exceptions
 
@@ -8,6 +8,7 @@ from drf_integrations import models
 
 if TYPE_CHECKING:
     from rest_framework.request import Request
+
     from drf_integrations.types import AnyUser
 
 

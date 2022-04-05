@@ -24,7 +24,8 @@ class UserViewSet(viewsets.ViewSet):
 
     def update(self, request, pk):
         user = User.objects.get(
-            pk=pk, organisation_id=request.auth_context.installation.organisation_id,
+            pk=pk,
+            organisation_id=request.auth_context.installation.organisation_id,
         )
 
         IntegrationUser.objects.bulk_create(
