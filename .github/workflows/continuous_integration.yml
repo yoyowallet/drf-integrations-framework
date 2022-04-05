@@ -24,14 +24,16 @@ jobs:
         env:
           DB_HOST: localhost
           POSTGRES_DB: platform
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: postgres # Password required, can't be blank.
         ports:
           - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
-      DB_HOST: localhost
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_PASSWORD: postgres
+      PGDATABASE: platform
     strategy:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10"]
@@ -41,10 +43,6 @@ jobs:
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
-    - name: Wait / Sleep
-      uses: jakejarvis/wait-action@v0.1.0
-      with:
-        time: '10s'
     - name: Build steps
       uses: ./.github/actions/drf-integrations-framework-build
       with:
