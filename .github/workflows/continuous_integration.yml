@@ -27,8 +27,6 @@ jobs:
           POSTGRES_PASSWORD: ""
         ports:
           - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     env:
       DB_HOST: localhost
       POSTGRES_HOST: postgres
@@ -42,8 +40,10 @@ jobs:
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
-    - name: Wait for DB
-      run: dockerize -wait tcp://localhost:5432 -timeout 1m
+    - name: Wait / Sleep
+      uses: jakejarvis/wait-action@v0.1.0
+      with:
+        time: '10s'
     - name: Build steps
       uses: ./.github/actions/drf-integrations-framework-build
       with:
