@@ -275,6 +275,7 @@ def _get_application_installation_class():
             related_name="installations",
         )
         config = fields.JSONField(null=True, blank=True)
+        api_client_name = models.CharField(max_length=255, null=True, blank=True)
 
         objects = managers.ApplicationInstallationQuerySet.as_manager()
 
