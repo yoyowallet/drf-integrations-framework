@@ -24,13 +24,14 @@ jobs:
         env:
           DB_HOST: localhost
           POSTGRES_DB: platform
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
     env:
       DB_HOST: localhost
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
+      POSTGRES_PASSWORD: postgres
     strategy:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10"]
