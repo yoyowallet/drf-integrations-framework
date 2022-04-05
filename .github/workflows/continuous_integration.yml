@@ -34,4 +34,4 @@ jobs:
         django-version: ${{ matrix.django }}
     - name: Test with pytest
       run: |
-        poetry run pytest --cov --nomigrations
+        poetry run pytest --nomigrations
