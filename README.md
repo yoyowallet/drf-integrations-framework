@@ -107,7 +107,7 @@ There are some features that DRF Integrations Framework provides out of the box.
 (`drf_integrations.auth_backends.IntegrationOAuth2Authentication`).
 
 ## Changelog
-See [CHANGELOG.md](CHANGELOG.md)
+See [Releases](https://github.com/yoyowallet/drf-integrations-framework/releases)
 
 ## Authors
 DRF Integrations Framework is an original idea by [@jianyuan](https://github.com/jianyuan), developed and maintained by
