@@ -1,13 +1,14 @@
-import copy
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type
 
+import copy
 from django import forms
 from django.core.exceptions import ValidationError
 
 if TYPE_CHECKING:
-    from drf_integrations import models
     from rest_framework.request import Request
+
+    from drf_integrations import models
 
 
 @dataclass

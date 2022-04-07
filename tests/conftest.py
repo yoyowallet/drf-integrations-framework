@@ -29,7 +29,7 @@ def pytest_configure(config):
                 "ENGINE": "django.db.backends.postgresql",
                 "NAME": "drfintegrations",
                 "USER": "postgres",
-                "PASSWORD": None,
+                "PASSWORD": "postgres",
                 "HOST": "localhost",
                 "PORT": "5432",
             }
@@ -156,7 +156,9 @@ def create_access_token():
         if not application:
             application = factories.ApplicationFactory(**(application_kwargs or dict()))
         installation = factories.ApplicationInstallationFactory(
-            application_id=application.pk, target_id=target_id, config=installation_config,
+            application_id=application.pk,
+            target_id=target_id,
+            config=installation_config,
         )
         token_obj = factories.AccessTokenFactory(
             application=application, token=token, scope=scope or ""

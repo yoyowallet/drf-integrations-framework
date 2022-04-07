@@ -1,6 +1,5 @@
 import csv
 import io
-
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -45,7 +44,9 @@ class CommaSeparatedValueField(models.TextField):
 
         # Neither a string nor a list/tuple
         raise ValidationError(
-            _("Enter only values separated by commas."), code="invalid", params={"value": value},
+            _("Enter only values separated by commas."),
+            code="invalid",
+            params={"value": value},
         )
 
     def get_prep_value(self, value):

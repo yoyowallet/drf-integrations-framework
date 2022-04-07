@@ -1,7 +1,6 @@
-import urllib.parse
 from typing import TYPE_CHECKING, Dict, List, Optional, Type
-from uuid import uuid4
 
+import urllib.parse
 from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -15,17 +14,19 @@ from oauth2_provider.models import AbstractGrant as OAuthAbstractGrant
 from oauth2_provider.models import AbstractRefreshToken as OAuthAbstractRefreshToken
 from oauth2_provider.scopes import get_scopes_backend
 from oauth2_provider.settings import oauth2_settings
+from uuid import uuid4
 
 from drf_integrations import fields, managers
 from drf_integrations.types import IntegrationT
 
 if TYPE_CHECKING:
     from rest_framework.request import Request
+
     from drf_integrations.integrations.base import Context
 
 
 def get_application_installation_model() -> "AbstractApplicationInstallation":
-    """ Return the AccessToken model that is active in this project. """
+    """Return the AccessToken model that is active in this project."""
     return apps.get_model(settings.INTEGRATIONS_APPLICATION_INSTALLATION_MODEL)
 
 
@@ -66,7 +67,8 @@ class AbstractApplication(OAuthAbstractApplication):
         constraints = [
             models.CheckConstraint(
                 check=~models.Q(
-                    internal_integration_name__isnull=False, local_integration_name__isnull=False,
+                    internal_integration_name__isnull=False,
+                    local_integration_name__isnull=False,
                 ),
                 name="check_one_integration_set",
             )
@@ -199,7 +201,9 @@ class AbstractApplication(OAuthAbstractApplication):
 
         with transaction.atomic(using=router.db_for_write(application_installation)):
             installation, __ = application_installation.objects.update_or_create(
-                application=self, **target_filter, defaults={"config": config, "deleted_at": None},
+                application=self,
+                **target_filter,
+                defaults={"config": config, "deleted_at": None},
             )
             if self.has_config_class:
                 integration.check_config(installation.get_context())
@@ -271,6 +275,7 @@ def _get_application_installation_class():
             related_name="installations",
         )
         config = fields.JSONField(null=True, blank=True)
+        api_client_name = models.CharField(max_length=255, null=True, blank=True)
 
         objects = managers.ApplicationInstallationQuerySet.as_manager()
 
@@ -307,7 +312,8 @@ def _get_application_installation_class():
             self.save(using=using)
 
     _AbstractApplicationInstallation.add_to_class(
-        get_application_installation_install_attribute_name(), models.PositiveIntegerField(),
+        get_application_installation_install_attribute_name(),
+        models.PositiveIntegerField(),
     )
 
     return _AbstractApplicationInstallation

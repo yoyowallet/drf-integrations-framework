@@ -1,7 +1,7 @@
 # DRF Integrations Framework
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-![yoyowallet](https://circleci.com/gh/yoyowallet/drf-integrations-framework.svg?style=shield)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fyoyowallet%2Fdrf-integrations-framework%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/yoyowallet/drf-integrations-framework/goto?ref=master)
 
 DRF Integrations Framework is a toolkit that plugs in to [Django REST Framework](https://www.django-rest-framework.org/)
 and simplifies the management of third party integrations. If you find yourself connecting to multiple services with
@@ -10,15 +10,19 @@ Framework will probably simplify that for you. DRF Integrations Framework will h
 between the source/destiny of events, how these requests are authenticated and the business logic associated to them.
 
 ## Requirements
-- Python 3.6+
+- Python 3.7+
 - Django 2.2+
 - Django REST Framework 3.9.2+
-- Django OAuth Toolkit 1.2+
+- Django OAuth Toolkit 1.7.1+
 
 ## Installation
-Install using `pip` (coming soon to PyPI):
+Install from PyPi:
 ```bash
-pip install https://github.com/yoyowallet/drf-integrations-framework/archive/0.6.1.tar.gz
+pip install drf-integrations-framework
+```
+Or install from source:
+```bash
+pip install https://github.com/yoyowallet/drf-integrations-framework/archive/v0.7.0.tar.gz
 ```
 
 Add the apps to your `INSTALLED_APPS`:
@@ -107,7 +111,7 @@ There are some features that DRF Integrations Framework provides out of the box.
 (`drf_integrations.auth_backends.IntegrationOAuth2Authentication`).
 
 ## Changelog
-See [CHANGELOG.md](CHANGELOG.md)
+See [Releases](https://github.com/yoyowallet/drf-integrations-framework/releases)
 
 ## Authors
 DRF Integrations Framework is an original idea by [@jianyuan](https://github.com/jianyuan), developed and maintained by

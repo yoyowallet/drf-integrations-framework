@@ -1,9 +1,8 @@
 import copy
-from unittest.mock import Mock
-
 import pytest
 from django import forms
 from django.core.exceptions import ValidationError
+from unittest.mock import Mock
 
 from drf_integrations import integrations
 from drf_integrations.integrations.base import Context
