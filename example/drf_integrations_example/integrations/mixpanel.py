@@ -1,5 +1,4 @@
 import logging
-
 from django import forms
 from django.db.models import signals
 from mixpanel import Mixpanel
@@ -21,7 +20,12 @@ class MixpanelConfigForm(BaseIntegrationForm):
     mixpanel_token = forms.CharField()
 
     def set_initial_values(
-        self, *, target, integration, application=None, **kwargs,
+        self,
+        *,
+        target,
+        integration,
+        application=None,
+        **kwargs,
     ):
         if application:
             if application.internal_integration_name != MixpanelIntegration.name:
@@ -33,7 +37,10 @@ class MixpanelConfigForm(BaseIntegrationForm):
             application = Application.objects.get_by_internal_integration(MixpanelIntegration)
 
         super().set_initial_values(
-            target=target, integration=integration, application=application, **kwargs,
+            target=target,
+            integration=integration,
+            application=application,
+            **kwargs,
         )
 
 

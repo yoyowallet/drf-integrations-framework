@@ -10,13 +10,17 @@ Framework will probably simplify that for you. DRF Integrations Framework will h
 between the source/destiny of events, how these requests are authenticated and the business logic associated to them.
 
 ## Requirements
-- Python 3.6+
+- Python 3.7+
 - Django 2.2+
 - Django REST Framework 3.9.2+
-- Django OAuth Toolkit 1.2+
+- Django OAuth Toolkit 1.7.1+
 
 ## Installation
-Install using `pip` (coming soon to PyPI):
+Install from PyPi:
+```bash
+pip install drf-integrations-framework
+```
+Or install from source:
 ```bash
 pip install https://github.com/yoyowallet/drf-integrations-framework/archive/0.6.1.tar.gz
 ```
@@ -107,7 +111,7 @@ There are some features that DRF Integrations Framework provides out of the box.
 (`drf_integrations.auth_backends.IntegrationOAuth2Authentication`).
 
 ## Changelog
-See [CHANGELOG.md](CHANGELOG.md)
+See [Releases](https://github.com/yoyowallet/drf-integrations-framework/releases)
 
 ## Authors
 DRF Integrations Framework is an original idea by [@jianyuan](https://github.com/jianyuan), developed and maintained by

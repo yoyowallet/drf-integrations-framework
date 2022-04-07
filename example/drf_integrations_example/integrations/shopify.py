@@ -1,10 +1,10 @@
-import hmac
-import logging
-from hashlib import sha256
 from typing import TYPE_CHECKING, Dict, List, Optional
 
+import hmac
+import logging
 from django import forms
 from django.contrib.auth.models import AnonymousUser
+from hashlib import sha256
 from oauth2_provider.contrib.rest_framework import TokenHasScope
 from oauth2_provider.models import get_access_token_model, get_application_model
 from rest_framework import routers, status, viewsets
@@ -30,7 +30,12 @@ class ShopifyConfigForm(BaseIntegrationForm):
     shared_secret = forms.CharField()
 
     def set_initial_values(
-        self, *, target, integration, application=None, **kwargs,
+        self,
+        *,
+        target,
+        integration,
+        application=None,
+        **kwargs,
     ):
         if application:
             if application.internal_integration_name != ShopifyIntegration.name:
@@ -42,7 +47,10 @@ class ShopifyConfigForm(BaseIntegrationForm):
             application = Application.objects.get_by_internal_integration(ShopifyIntegration)
 
         super().set_initial_values(
-            target=target, integration=integration, application=application, **kwargs,
+            target=target,
+            integration=integration,
+            application=application,
+            **kwargs,
         )
 
     @classmethod
@@ -127,7 +135,9 @@ class ShopifyBaseAuthBackend(BaseAuthentication):
             return None
 
         new_signature = hmac.new(
-            context.installation.get_config()["shared_secret"].encode(), signature_values, sha256,
+            context.installation.get_config()["shared_secret"].encode(),
+            signature_values,
+            sha256,
         )
         if not hmac.compare_digest(signature.encode("utf-8"), new_signature.encode("utf-8")):
             logger.info(

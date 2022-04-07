@@ -69,7 +69,9 @@ def test_multiple_auth_backends_none_valid(get_application):
     application.install(target_id=1, config=dict(extra_field="mysecret"))
 
     factory = APIRequestFactory()
-    view = TestInternalViewset.as_view({"post": "create"},)
+    view = TestInternalViewset.as_view(
+        {"post": "create"},
+    )
     request = factory.post("", HTTP_MY_HEADER="randomstr")
 
     response = view(request)
@@ -86,7 +88,9 @@ def test_multiple_auth_backends_internal_pass(get_application):
     context = Context(installation=installation)
 
     factory = APIRequestFactory()
-    view = TestInternalViewset.as_view({"post": "create"},)
+    view = TestInternalViewset.as_view(
+        {"post": "create"},
+    )
     request = factory.post("", HTTP_MY_HEADER=secret)
 
     response = view(request)

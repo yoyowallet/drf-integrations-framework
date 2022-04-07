@@ -1,6 +1,6 @@
-import inspect
 from typing import Dict, Iterable, List, Optional, Set, Type, Union
 
+import inspect
 from django.urls import include, path
 
 from drf_integrations.exceptions import ImproperlyConfigured

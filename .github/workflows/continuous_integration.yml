@@ -1,0 +1,53 @@
+name: "Continuous Integration"
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.10.0
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Run pre-commit
+        uses: pre-commit/action@v2.0.3
+
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          DB_HOST: localhost
+          POSTGRES_DB: drfintegrations
+          POSTGRES_PASSWORD: postgres # Password required, can't be blank.
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGDATABASE: platform
+    strategy:
+      matrix:
+        python: ["3.7", "3.8", "3.9", "3.10"]
+        django: ["2.2", "3.2"]
+      fail-fast: false
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+    - name: Build steps
+      uses: ./.github/actions/drf-integrations-framework-build
+      with:
+        python-version: ${{ matrix.python }}
+        django-version: ${{ matrix.django }}
+    - name: Test with pytest
+      run: |
+        poetry run pytest --nomigrations

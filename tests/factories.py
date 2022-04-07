@@ -1,24 +1,23 @@
-from datetime import timedelta
-
 import factory
+from datetime import timedelta
 from django.utils import timezone
 
 from drf_integrations import models
 
 
-class ApplicationFactory(factory.DjangoModelFactory):
+class ApplicationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Application
 
 
-class ApplicationInstallationFactory(factory.DjangoModelFactory):
+class ApplicationInstallationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.ApplicationInstallation
 
     application = factory.SubFactory(ApplicationFactory)
 
 
-class AccessTokenFactory(factory.DjangoModelFactory):
+class AccessTokenFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.AccessToken
 

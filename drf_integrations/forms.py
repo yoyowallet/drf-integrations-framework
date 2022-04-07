@@ -1,5 +1,4 @@
 import copy
-
 from django import forms
 from django.contrib.postgres.forms.jsonb import JSONField
 

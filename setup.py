@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
-import sys
-
 import setuptools
+import sys
 
 CURRENT_PYTHON = sys.version_info[:2]
 REQUIRED_PYTHON = (3, 6)
