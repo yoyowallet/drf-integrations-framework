@@ -22,7 +22,7 @@ pip install drf-integrations-framework
 ```
 Or install from source:
 ```bash
-pip install https://github.com/yoyowallet/drf-integrations-framework/archive/v0.7.0.tar.gz
+pip install https://github.com/yoyowallet/drf-integrations-framework/archive/v0.7.1.tar.gz
 ```
 
 Add the apps to your `INSTALLED_APPS`:
