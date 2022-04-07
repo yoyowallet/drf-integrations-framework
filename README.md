@@ -1,7 +1,7 @@
 # DRF Integrations Framework
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-![yoyowallet](https://circleci.com/gh/yoyowallet/drf-integrations-framework.svg?style=shield)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fyoyowallet%2Fdrf-integrations-framework%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/yoyowallet/drf-integrations-framework/goto?ref=master)
 
 DRF Integrations Framework is a toolkit that plugs in to [Django REST Framework](https://www.django-rest-framework.org/)
 and simplifies the management of third party integrations. If you find yourself connecting to multiple services with
@@ -22,7 +22,7 @@ pip install drf-integrations-framework
 ```
 Or install from source:
 ```bash
-pip install https://github.com/yoyowallet/drf-integrations-framework/archive/0.6.1.tar.gz
+pip install https://github.com/yoyowallet/drf-integrations-framework/archive/v0.7.0.tar.gz
 ```
 
 Add the apps to your `INSTALLED_APPS`:
