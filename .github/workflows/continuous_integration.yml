@@ -50,4 +50,4 @@ jobs:
         django-version: ${{ matrix.django }}
     - name: Test with pytest
       run: |
-        poetry run pytest --nomigrations
+        poetry run pytest
