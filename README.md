@@ -16,7 +16,11 @@ between the source/destiny of events, how these requests are authenticated and t
 - Django OAuth Toolkit 1.7.1+
 
 ## Installation
-Install using `pip`:
+Install from PyPi:
+```bash
+pip install drf-integrations-framework
+```
+Or install from source:
 ```bash
 pip install https://github.com/yoyowallet/drf-integrations-framework/archive/0.6.1.tar.gz
 ```
