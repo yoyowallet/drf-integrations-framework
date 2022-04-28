@@ -16,8 +16,11 @@ from oauth2_provider.scopes import get_scopes_backend
 from oauth2_provider.settings import oauth2_settings
 from uuid import uuid4
 
-from drf_integrations import fields, managers
+from drf_integrations import managers
+from drf_integrations.fields import get_json_field
 from drf_integrations.types import IntegrationT
+
+JSONField = get_json_field()
 
 if TYPE_CHECKING:
     from rest_framework.request import Request
@@ -274,7 +277,7 @@ def _get_application_installation_class():
             on_delete=models.PROTECT,
             related_name="installations",
         )
-        config = fields.JSONField(null=True, blank=True)
+        config = JSONField(null=True, blank=True)
         api_client_name = models.CharField(max_length=255, null=True, blank=True)
 
         objects = managers.ApplicationInstallationQuerySet.as_manager()
