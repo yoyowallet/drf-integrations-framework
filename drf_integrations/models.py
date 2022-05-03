@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _L
 from oauth2_provider.models import AbstractAccessToken as OAuthAbstractAccessToken
 from oauth2_provider.models import AbstractApplication as OAuthAbstractApplication
 from oauth2_provider.models import AbstractGrant as OAuthAbstractGrant
+from oauth2_provider.models import AbstractIDToken as OAuthAbstractIDToken
 from oauth2_provider.models import AbstractRefreshToken as OAuthAbstractRefreshToken
 from oauth2_provider.scopes import get_scopes_backend
 from oauth2_provider.settings import oauth2_settings
@@ -245,6 +246,16 @@ class AbstractRefreshToken(OAuthAbstractRefreshToken):
 class RefreshToken(AbstractRefreshToken):
     class Meta(AbstractRefreshToken.Meta):
         swappable = "OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL"
+
+
+class AbstractIDToken(OAuthAbstractIDToken):
+    class Meta(OAuthAbstractIDToken.Meta):
+        abstract = True
+
+
+class IDToken(AbstractIDToken):
+    class Meta(AbstractIDToken.Meta):
+        swappable = "OAUTH2_PROVIDER_ID_TOKEN_MODEL"
 
 
 class AbstractGrant(OAuthAbstractGrant):
