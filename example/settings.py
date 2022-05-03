@@ -133,7 +133,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-DB_BACKEND_JSON_FIELD = "django.contrib.postgres.fields.JSONField"
+DB_BACKEND_JSON_FIELD = "django.db.models.JSONField"
 INSTALLED_INTEGRATIONS = [
     "example.drf_integrations_example.api.integrations.APIClientIntegration",
     "example.drf_integrations_example.integrations.shopify.ShopifyIntegration",

@@ -37,7 +37,7 @@ jobs:
     strategy:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10"]
-        django: ["2.2", "3.2"]
+        django: ["2.2", "3.2", "4.0"]
       fail-fast: false
 
     steps:
@@ -50,4 +50,4 @@ jobs:
         django-version: ${{ matrix.django }}
     - name: Test with pytest
       run: |
-        poetry run pytest --nomigrations
+        poetry run pytest --no-migrations
