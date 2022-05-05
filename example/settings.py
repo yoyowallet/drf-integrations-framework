@@ -134,14 +134,18 @@ REST_FRAMEWORK = {
 }
 
 DB_BACKEND_JSON_FIELD = "django.db.models.JSONField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 INSTALLED_INTEGRATIONS = [
     "example.drf_integrations_example.api.integrations.APIClientIntegration",
     "example.drf_integrations_example.integrations.shopify.ShopifyIntegration",
     "example.drf_integrations_example.integrations.mixpanel.MixpanelIntegration",
 ]
+
 OAUTH2_PROVIDER_APPLICATION_MODEL = "drf_integrations.Application"
 OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = "drf_integrations.AccessToken"
 OAUTH2_PROVIDER_GRANT_MODEL = "drf_integrations.Grant"
 OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = "drf_integrations.RefreshToken"
+
 INTEGRATIONS_APPLICATION_INSTALLATION_MODEL = "drf_integrations.ApplicationInstallation"
 INTEGRATIONS_APPLICATION_INSTALLATION_INSTALL_ATTRIBUTE = "organisation"
