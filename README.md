@@ -16,6 +16,14 @@ between the source/destiny of events, how these requests are authenticated and t
 - Django OAuth Toolkit 1.7.1+
 
 ## Installation
+
+The following library is required in order to build on `Linux systems`. It fixes the
+problem where `Error: pg_config executable not found.` is given when installing psycopg2
+via `poetry install`
+```
+sudo apt install libpq-dev
+```
+
 Install from PyPi:
 ```bash
 pip install drf-integrations-framework
@@ -62,7 +70,7 @@ You will also have to configure how the integrations are stored in the database.
 the type of JSON field your DB uses. On the other hand, you will have to set the name of the attribute where you want to
 relate the integrations.
 ```python
-DB_BACKEND_JSON_FIELD = "django.contrib.postgres.fields.JSONField"
+DB_BACKEND_JSON_FIELD = "django.db.models.JSONField"
 INTEGRATIONS_APPLICATION_INSTALLATION_INSTALL_ATTRIBUTE = "organisation"
 ```
 Finally, you have to set the list of integrations that are available in your system (see the following section to learn
@@ -110,9 +118,29 @@ There are some features that DRF Integrations Framework provides out of the box.
 - An authentication backend for local OAuth2 integrations
 (`drf_integrations.auth_backends.IntegrationOAuth2Authentication`).
 
+## Running the tests
+
+To run the tests you need to have a postgresql server running on localhost and have a
+postgres user/role defined. To create the postgres user and role you can use the
+following:
+
+```psql -c 'CREATE ROLE postgres WITH LOGIN SUPERUSER' ```
+
+To run the tests execute the following
+
+```make tests```
+
+If running tests under pycharm ensure that `python tests` -> `pytest` is used and set
+the `Additional Arguments` to `--no-migrations`
+
+Failing to specify `--no-migrations` will result in the following error:
+```
+ValueError: Related model 'oauth2_provider.idtoken' cannot be resolved
+```
+
 ## Changelog
 See [Releases](https://github.com/yoyowallet/drf-integrations-framework/releases)
 
 ## Authors
 DRF Integrations Framework is an original idea by [@jianyuan](https://github.com/jianyuan), developed and maintained by
-the &#x1F918; platform team at [@yoyowallet](https://github.com/yoyowallet).
+the platform team at [@yoyowallet](https://github.com/yoyowallet).

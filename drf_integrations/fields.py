@@ -10,13 +10,16 @@ from django.utils.translation import ugettext_lazy as _
 
 from drf_integrations.utils import split_string
 
-try:
-    JSONField = import_string(settings.DB_BACKEND_JSON_FIELD)
-except ImportError:
-    raise ImportError(
-        "drf_integrations can only work with a backend that supports JSON fields, please make "
-        "sure you set the DB_BACKEND_JSON_FIELD setting to the JSONField of your backend."
-    )
+
+def get_json_field():
+    try:
+        return import_string(settings.DB_BACKEND_JSON_FIELD)
+    except ImportError:
+        raise ImportError(
+            "drf_integrations can only work with a backend that supports JSON fields, "
+            "please make sure you set the DB_BACKEND_JSON_FIELD setting to the "
+            "JSONField of your backend."
+        )
 
 
 class CommaSeparatedValueField(models.TextField):

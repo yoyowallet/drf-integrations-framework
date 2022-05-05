@@ -22,6 +22,13 @@ if TYPE_CHECKING:
 def pytest_configure(config):
     from django.conf import settings
 
+    # If DJANGO_SETTINGS_MODULE is already pointing at settings then the settings will
+    # already have been loaded to skip the configuration here and start the django
+    # setup.
+    if settings.configured:
+        django.setup()
+        return
+
     settings.configure(
         DEBUG_PROPAGATE_EXCEPTIONS=True,
         DATABASES={
@@ -66,12 +73,13 @@ def pytest_configure(config):
             "oauth2_provider",
         ),
         # drf_integrations specific setup
-        DB_BACKEND_JSON_FIELD="django.contrib.postgres.fields.JSONField",
+        DB_BACKEND_JSON_FIELD="django.db.models.JSONField",
         INSTALLED_INTEGRATIONS=[],
         OAUTH2_PROVIDER_APPLICATION_MODEL="drf_integrations.Application",
         OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL="drf_integrations.AccessToken",
         OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL="drf_integrations.RefreshToken",
         OAUTH2_PROVIDER_GRANT_MODEL="drf_integrations.Grant",
+        OAUTH2_PROVIDER_ID_TOKEN_MODEL="oauth2_provider.IDToken",
         INTEGRATIONS_APPLICATION_INSTALLATION_MODEL="drf_integrations.ApplicationInstallation",
         INTEGRATIONS_APPLICATION_INSTALLATION_INSTALL_ATTRIBUTE="target",
     )

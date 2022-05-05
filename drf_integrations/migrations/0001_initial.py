@@ -6,7 +6,10 @@ import oauth2_provider.generators
 from django.conf import settings
 from django.db import migrations, models
 
+from drf_integrations.fields import get_json_field
 from drf_integrations.models import get_application_installation_install_attribute_name
+
+JSONField = get_json_field()
 
 
 class Migration(migrations.Migration):
@@ -231,7 +234,7 @@ class Migration(migrations.Migration):
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 ("deleted_at", models.DateTimeField(editable=False, null=True)),
-                ("config", django.contrib.postgres.fields.jsonb.JSONField(null=True)),
+                ("config", JSONField(null=True)),
                 (
                     get_application_installation_install_attribute_name(),
                     models.PositiveIntegerField(),
