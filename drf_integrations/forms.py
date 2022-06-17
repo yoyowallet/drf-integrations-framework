@@ -1,11 +1,9 @@
 import copy
 from django import forms
+from django.contrib.postgres.forms import JSONField
 
 from drf_integrations import models
-from drf_integrations.fields import get_json_field
 from drf_integrations.integrations import Registry
-
-JSONField = get_json_field()
 
 
 class ApplicationInstallationForm(forms.ModelForm):
