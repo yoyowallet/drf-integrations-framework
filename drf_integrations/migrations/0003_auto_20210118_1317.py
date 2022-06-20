@@ -2,7 +2,7 @@
 
 from django.db import migrations
 
-from drf_integrations.fields import get_json_model_field
+from drf_integrations.utils import get_json_model_field
 
 JSONField = get_json_model_field()
 
