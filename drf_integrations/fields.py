@@ -15,7 +15,7 @@ from drf_integrations.utils import split_string
 logger = logging.getLogger(__name__)
 
 
-def get_json_model_field():
+def get_json_model_field_import_name():
     # if the Django version >= 3.2 then user the new default JSONField
     if django.VERSION[0] >= 3 and django.VERSION[1] >= 2:
         default = "django.db.models.JSONField"
@@ -25,32 +25,17 @@ def get_json_model_field():
     # Allow for override
     model_field = getattr(settings, "DB_BACKEND_JSON_FIELD", default)
     logger.info(f"Using django model JSONField: {model_field}")
+    return model_field
+
+
+def get_json_model_field():
+    model_field = get_json_model_field_import_name()
     try:
         return import_string(model_field)
     except ImportError:
         raise ImportError(
             "drf_integrations can only work with a backend that supports JSON fields, "
             "please make sure you set the DB_BACKEND_JSON_FIELD setting to the "
-            "JSONField of your backend."
-        )
-
-
-def get_json_form_field():
-    # if the Django version >= 3.2 then user the new default JSONField
-    if django.VERSION[0] >= 3 and django.VERSION[1] >= 2:
-        default = "django.forms.JSONField"
-    else:
-        default = "django.contrib.postgres.forms.JSONField"
-
-    # Allow for override
-    form_field = getattr(settings, "DB_BACKEND_JSON_FORM_FIELD", default)
-    logger.info(f"Using django form JSONField: {form_field}")
-    try:
-        return import_string(form_field)
-    except ImportError:
-        raise ImportError(
-            "drf_integrations can only work with a backend that supports JSON fields, "
-            "please make sure you set the DB_BACKEND_JSON_FORM_FIELD setting to the "
             "JSONField of your backend."
         )
 
