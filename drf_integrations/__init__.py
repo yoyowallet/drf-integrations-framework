@@ -4,6 +4,6 @@ from .utils import (  # noqa
     get_json_model_field_import_name,
 )
 
-VERSION = "0.8.3.a1"
+VERSION = "0.8.3"
 
 default_app_config = "drf_integrations.apps.DRFIntegrationsConfig"

@@ -3,8 +3,11 @@ from typing import Any, Iterable, Iterator, List, Optional, Union
 import django
 import logging
 from django.utils.module_loading import import_string
+from environ import Env
 
 AnyString = Union[str, Iterable[Any]]
+
+env = Env()
 
 
 def split_string(string: Optional[AnyString], separator: str = ",") -> List[str]:
@@ -72,7 +75,7 @@ def get_json_form_field_import_name():
         default = "django.contrib.postgres.forms.JSONField"
 
     # Allow for override
-    form_field = getattr(django.conf.settings, "DB_BACKEND_JSON_FORM_FIELD", default)
+    form_field = env.str("DB_BACKEND_JSON_FORM_FIELD", default)
     logger.info(f"Using django form JSONField: {form_field}")
     return form_field
 
@@ -97,7 +100,7 @@ def get_json_model_field_import_name():
         default = "django.contrib.postgres.fields.JSONField"
 
     # Allow for override
-    model_field = getattr(django.conf.settings, "DB_BACKEND_JSON_FIELD", default)
+    model_field = env.str("DB_BACKEND_JSON_FIELD", default)
     logger.info(f"Using django model JSONField: {model_field}")
     return model_field
 
