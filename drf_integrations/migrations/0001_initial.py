@@ -6,8 +6,8 @@ import oauth2_provider.generators
 from django.conf import settings
 from django.db import migrations, models
 
-from drf_integrations.fields import get_json_model_field
 from drf_integrations.models import get_application_installation_install_attribute_name
+from drf_integrations.utils import get_json_model_field
 
 JSONField = get_json_model_field()
 

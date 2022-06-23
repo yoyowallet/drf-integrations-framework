@@ -2,8 +2,9 @@ import copy
 from django import forms
 
 from drf_integrations import models
-from drf_integrations.fields import get_json_form_field
 from drf_integrations.integrations import Registry
+
+from . import utils
 
 
 class ApplicationInstallationForm(forms.ModelForm):
@@ -57,7 +58,7 @@ class ApplicationInstallationForm(forms.ModelForm):
         else:
             # Application has no integration
             # Render config field
-            self.fields["config"] = get_json_form_field()(required=False)
+            self.fields["config"] = utils.get_json_form_field()(required=False)
             self.initial["config"] = config
 
     def clean(self):

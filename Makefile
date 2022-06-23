@@ -1,6 +1,6 @@
 .PHONY: deps
 deps:
-	poetry env use 3.10
+	poetry env use 3.9
 	poetry install
 
 .PHONY: tests

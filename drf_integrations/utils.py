@@ -1,6 +1,13 @@
 from typing import Any, Iterable, Iterator, List, Optional, Union
 
+import django
+import logging
+from django.utils.module_loading import import_string
+from environ import Env
+
 AnyString = Union[str, Iterable[Any]]
+
+env = Env()
 
 
 def split_string(string: Optional[AnyString], separator: str = ",") -> List[str]:
@@ -55,3 +62,56 @@ def is_instance_of_all(obj, classes: Iterable[type]) -> bool:
     if any(not isinstance(classinfo, type) for classinfo in classes):
         raise TypeError("classes must contain types")
     return all(isinstance(obj, classinfo) for classinfo in classes)
+
+
+logger = logging.getLogger(__name__)
+
+
+def get_json_form_field_import_name():
+    # if the Django version >= 3.2 then user the new default JSONField
+    if django.VERSION[0:2] >= (3, 2):
+        default = "django.forms.JSONField"
+    else:
+        default = "django.contrib.postgres.forms.JSONField"
+
+    # Allow for override
+    form_field = env.str("DB_BACKEND_JSON_FORM_FIELD", default)
+    logger.info(f"Using django form JSONField: {form_field}")
+    return form_field
+
+
+def get_json_form_field():
+    form_field = get_json_form_field_import_name()
+    try:
+        return import_string(form_field)
+    except ImportError:
+        raise ImportError(
+            "drf_integrations can only work with a backend that supports JSON fields, "
+            "please make sure you set the DB_BACKEND_JSON_FORM_FIELD setting to the "
+            "JSONField of your backend."
+        )
+
+
+def get_json_model_field_import_name():
+    # if the Django version >= 3.2 then user the new default JSONField
+    if django.VERSION[0:2] >= (3, 2):
+        default = "django.db.models.JSONField"
+    else:
+        default = "django.contrib.postgres.fields.JSONField"
+
+    # Allow for override
+    model_field = env.str("DB_BACKEND_JSON_FIELD", default)
+    logger.info(f"Using django model JSONField: {model_field}")
+    return model_field
+
+
+def get_json_model_field():
+    model_field = get_json_model_field_import_name()
+    try:
+        return import_string(model_field)
+    except ImportError:
+        raise ImportError(
+            "drf_integrations can only work with a backend that supports JSON fields, "
+            "please make sure you set the DB_BACKEND_JSON_FIELD setting to the "
+            "JSONField of your backend."
+        )

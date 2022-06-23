@@ -17,10 +17,11 @@ from oauth2_provider.settings import oauth2_settings
 from uuid import uuid4
 
 from drf_integrations import managers
-from drf_integrations.fields import get_json_model_field
 from drf_integrations.types import IntegrationT
 
-JSONField = get_json_model_field()
+from . import utils
+
+JSONField = utils.get_json_model_field()
 
 if TYPE_CHECKING:
     from rest_framework.request import Request
@@ -326,5 +327,9 @@ AbstractApplicationInstallation = _get_application_installation_class()
 
 
 class ApplicationInstallation(AbstractApplicationInstallation):
+    id = models.BigAutoField(
+        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+    )
+
     class Meta(AbstractApplicationInstallation.Meta):
         swappable = "INTEGRATIONS_APPLICATION_INSTALLATION_MODEL"
