@@ -327,5 +327,9 @@ AbstractApplicationInstallation = _get_application_installation_class()
 
 
 class ApplicationInstallation(AbstractApplicationInstallation):
+    id = models.BigAutoField(
+        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+    )
+
     class Meta(AbstractApplicationInstallation.Meta):
         swappable = "INTEGRATIONS_APPLICATION_INSTALLATION_MODEL"
