@@ -4,7 +4,7 @@ import setuptools
 import sys
 
 CURRENT_PYTHON = sys.version_info[:2]
-REQUIRED_PYTHON = (3, 6)
+REQUIRED_PYTHON = (3, 7)
 
 if __name__ == "__main__":
     # This check and everything above must remain compatible with Python 2.7.
