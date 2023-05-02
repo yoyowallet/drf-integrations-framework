@@ -89,7 +89,7 @@ def get_json_form_field():
             "drf_integrations can only work with a backend that supports JSON fields, "
             "please make sure you set the DB_BACKEND_JSON_FORM_FIELD setting to the "
             "JSONField of your backend."
-        )
+        ) from None
 
 
 def get_json_model_field_import_name():
@@ -114,4 +114,4 @@ def get_json_model_field():
             "drf_integrations can only work with a backend that supports JSON fields, "
             "please make sure you set the DB_BACKEND_JSON_FIELD setting to the "
             "JSONField of your backend."
-        )
+        ) from None

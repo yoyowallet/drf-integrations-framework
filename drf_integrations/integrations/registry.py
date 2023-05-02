@@ -59,8 +59,8 @@ class Registry:
                 integration = self.integrations[name_or_class.name]
             else:
                 raise ValueError("invalid name or base integration class")
-        except KeyError:
-            raise Registry.IntegrationUnavailableException()
+        except KeyError as err:
+            raise Registry.IntegrationUnavailableException() from err
 
         return integration
 

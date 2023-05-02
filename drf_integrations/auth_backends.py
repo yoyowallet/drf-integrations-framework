@@ -62,9 +62,9 @@ class IntegrationOAuth2Authentication(OAuth2Authentication):
             except (
                 ApplicationInstallation.DoesNotExist,
                 ApplicationInstallation.MultipleObjectsReturned,
-            ):
+            ) as err:
                 logger.exception("drf_integrations.auth_backends.invalid_installation")
-                raise exceptions.AuthenticationFailed()
+                raise exceptions.AuthenticationFailed() from err
 
             request.auth_context = installation.get_context()
 
