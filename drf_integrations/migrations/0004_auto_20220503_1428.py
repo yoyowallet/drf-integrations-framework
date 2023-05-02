@@ -15,9 +15,4 @@ class Migration(migrations.Migration):
             name="api_client_name",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
-        migrations.AlterField(
-            model_name="grant",
-            name="redirect_uri",
-            field=models.TextField(),
-        ),
     ]
