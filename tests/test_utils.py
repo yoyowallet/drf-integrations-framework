@@ -15,7 +15,7 @@ from drf_integrations import utils
 )
 def test_iter_split_string(values):
     result = ["0", "1", "2", "3", "4"]
-    for i, j in zip(utils.iter_split_string(values), result, strict=False):
+    for i, j in zip(utils.iter_split_string(values), result):  # noqa B905
         assert i == j
 
 
