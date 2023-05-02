@@ -9,12 +9,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v3
-    - name: Build steps
-      uses: ./.github/actions/drf-integrations-framework-build
-      with:
-        python-version: "3.7"
     - name: Build and publish
       uses: JRubics/poetry-publish@v1.16
       with:
