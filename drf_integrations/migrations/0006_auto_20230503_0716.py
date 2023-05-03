@@ -5,6 +5,10 @@ import oauth2_provider.generators
 import oauth2_provider.models
 from django.conf import settings
 from django.db import migrations, models
+from oauth2_provider.models import AbstractApplication
+
+# ClientSecretField is not avaiable in early versions of the application.
+is_client_secret_field = not isinstance(AbstractApplication.client_secret, models.CharField)
 
 
 class Migration(migrations.Migration):
@@ -72,6 +76,13 @@ class Migration(migrations.Migration):
                 db_index=True,
                 default=oauth2_provider.generators.generate_client_secret,
                 help_text="Hashed on Save. Copy it now if this is a new secret.",
+                max_length=255,
+            )
+            if is_client_secret_field
+            else models.CharField(
+                blank=True,
+                db_index=True,
+                default=oauth2_provider.generators.generate_client_secret,
                 max_length=255,
             ),
         ),
