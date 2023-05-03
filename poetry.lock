@@ -395,18 +395,17 @@ testing = ["coverage[toml] (>=5.0a4)", "pytest (>=4.6.11)"]
 
 [[package]]
 name = "django-oauth-toolkit"
-version = "2.0.0"
+version = "2.1.0"
 description = "OAuth2 Provider for Django"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "django-oauth-toolkit-2.0.0.tar.gz", hash = "sha256:755df741b9e1cce4d9b651453c54a4338b23919cefa55ad40d37c797e508e192"},
-    {file = "django_oauth_toolkit-2.0.0-py3-none-any.whl", hash = "sha256:eb265de8c1faa6362325e7a677e007a83bb64a65e8732a6278161622fa4e0fad"},
+    {file = "django_oauth_toolkit-2.1.0-py3-none-any.whl", hash = "sha256:642598d7462e92232a237faa399f9a2361aae1177e15f710b93559d111e12aef"},
 ]
 
 [package.dependencies]
-django = ">=2.2,<4.0.0 || >4.0.0"
+django = ">=2.2,<=4.1"
 jwcrypto = ">=0.8.0"
 oauthlib = ">=3.1.0"
 requests = ">=2.13.0"
@@ -1444,4 +1443,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.7,<3.12"
-content-hash = "2730cc2ffede3ccf2a110a06cb81cb4b07a717c304a304330f21917d9de7a80f"
+content-hash = "42d482872e348fa6b21ab60d0e20069c3e80ecf44d316d90ed13e8ecd86cbf4a"
