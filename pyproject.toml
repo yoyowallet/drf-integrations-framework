@@ -32,10 +32,7 @@ packages = [
 [tool.poetry.dependencies]
 python = ">=3.7,<3.12"
 djangorestframework = ">=3.9.2,<4"
-# Going above django-oauth-toolkit 1.5 causes issues with OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL
-# And swappable dependencies
-django-oauth-toolkit = "2.1.0"
-#django-oauth-toolkit = ">=2,<3"
+django-oauth-toolkit = ">=2,<3"
 django-environ = ">=0.4.0,<1"
 Pillow = ">=7.0.0,<10.0.0"
 
