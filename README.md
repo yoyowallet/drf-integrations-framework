@@ -13,7 +13,8 @@ between the source/destiny of events, how these requests are authenticated and t
 - Python 3.7+
 - Django 2.2+
 - Django REST Framework 3.9.2+
-- Django OAuth Toolkit 1.3-1.4
+- Django OAuth Toolkit 1.3+
+- Pillow 7+
 
 ## Installation
 
