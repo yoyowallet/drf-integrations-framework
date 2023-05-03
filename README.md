@@ -144,4 +144,4 @@ See [Releases](https://github.com/yoyowallet/drf-integrations-framework/releases
 
 ## Authors
 DRF Integrations Framework is an original idea by [@jianyuan](https://github.com/jianyuan), developed and maintained by
-the platform team at [@yoyowallet](https://github.com/yoyowallet).
+the loyalty domain team at [@saltpay](https://github.com/saltpay).

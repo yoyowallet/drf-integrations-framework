@@ -12,7 +12,7 @@ def test_no_missing_migrations():
     there were any changes.
     """
     stdout = StringIO()
-    call_command("makemigrations", dry_run=True, stdout=stdout)
+    call_command("makemigrations drf_integrations", dry_run=True, stdout=stdout)
 
     migrations_missing = "No changes detected" not in stdout.getvalue()
 
