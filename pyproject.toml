@@ -5,9 +5,9 @@
 
 [tool.poetry]
 name = "drf-integrations-framework"
-version = "0.8.6"
+version = "0.8.7"
 description = "Django REST Framework plugin that simplifies the management of third party integrations"
-authors = ["Yoyo <dev@yoyowallet.com>"]
+authors = ["Teya <dev@yoyowallet.com>"]
 license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/yoyowallet/drf-integrations-framework"
