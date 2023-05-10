@@ -78,7 +78,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("PGDATABASE", "drfintegrationsexample"),
-        "USER": os.environ.get("PGUSER", "postgres"),
+        "USER": os.environ.get("PGUSER"),
         "PASSWORD": os.environ.get("PGPASSWORD"),
         "HOST": os.environ.get("PGHOST", "localhost"),
         "PORT": os.environ.get("PGPORT", 5432),
@@ -148,4 +148,4 @@ OAUTH2_PROVIDER_GRANT_MODEL = "drf_integrations.Grant"
 OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = "drf_integrations.RefreshToken"
 
 INTEGRATIONS_APPLICATION_INSTALLATION_MODEL = "drf_integrations.ApplicationInstallation"
-INTEGRATIONS_APPLICATION_INSTALLATION_INSTALL_ATTRIBUTE = "organisation"
+INTEGRATIONS_APPLICATION_INSTALLATION_INSTALL_ATTRIBUTE = "target_id"

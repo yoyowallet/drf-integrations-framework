@@ -5,4 +5,5 @@ deps:
 
 .PHONY: tests
 tests: deps
-	poetry run pytest --no-migrations
+	poetry run tox $(pytest_args)
+	#poetry run pytest --no-migrations
