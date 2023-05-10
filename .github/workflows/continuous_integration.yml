@@ -22,9 +22,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          DB_HOST: localhost
-          POSTGRES_DB: drfintegrations
-          POSTGRES_PASSWORD: postgres # Password required, can't be blank.
+          POSTGRES_DB : postgres
+          POSTGRES_USER : postgres
+          POSTGRES_PASSWORD : postgres # Password required, can't be blank.
         ports:
           - 5432:5432
         options: >-
@@ -33,7 +33,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      PGDATABASE: drfintegrations
+      PGDATABASE: postgres
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
