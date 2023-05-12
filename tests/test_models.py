@@ -1,4 +1,5 @@
 import pytest
+from _pytest.fixtures import fixture
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -39,10 +40,19 @@ def test_application_unique(internal_integration_name, local_integration_name):
         )
 
 
-def test_sync_with_integration_registry(get_integration):
+@fixture
+def clear_integrations():
+    # Ignore the integrations defined under INSTALLED_INTEGRATIONS in example/settings.py
+    from drf_integrations import integrations
+
+    integrations.default_registry.integrations = {}
+
+
+def test_sync_with_integration_registry(get_integration, clear_integrations):
     """
     Check that synchronizing the integration registry correctly adds and deletes integrations
     """
+
     get_integration(is_local=True)
     get_integration(is_local=False)
     assert models.Application.objects.count() == 0

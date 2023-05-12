@@ -31,25 +31,26 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.7,<3.12"
-djangorestframework = "^3.11.0"
+djangorestframework = ">=3.11.0,<4"
 # Going above django-oauth-toolkit 1.5 causes issues with OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL
 # And swappable dependencies
 django-oauth-toolkit = ">=1.3,<1.5"
-django-environ = "^0.9.0"
+django-environ = ">=0.9.0"
 Pillow = ">=7.0.0,<10.0.0"
 
-[tool.poetry.dev-dependencies]
-black = "^22.6.0"
+[tool.poetry.group.dev.dependencies]
+black = "*"
 factory-boy = "^3.2.1"
-flake8 = "^4.0.1"
-isort = "^5.10.1"
+flake8 = "*"
+isort = "*"
 mixpanel = "^4.9.0"
 oauth2client = "^4.1.3"
-pre-commit = "^2.20.0"
+pre-commit = "*"
 psycopg2-binary = "^2.9.3"
 pytest = "^7.1.1"
 pytest-django = "^4.5.2"
 pytest-mock = "^3.8.2"
+tox = "^4.5.1"
 
 [build-system]
 requires = ["poetry>=0.12"]

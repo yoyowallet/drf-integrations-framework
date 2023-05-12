@@ -7,13 +7,13 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3.10.0
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
       - name: Run pre-commit
-        uses: pre-commit/action@v2.0.3
+        uses: pre-commit/action@v3.0.0
 
   test:
     needs: lint
@@ -22,9 +22,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          DB_HOST: localhost
-          POSTGRES_DB: drfintegrations
-          POSTGRES_PASSWORD: postgres # Password required, can't be blank.
+          POSTGRES_DB : postgres
+          POSTGRES_USER : postgres
+          POSTGRES_PASSWORD : postgres # Password required, can't be blank.
         ports:
           - 5432:5432
         options: >-
@@ -33,21 +33,16 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      PGDATABASE: platform
+      PGDATABASE: postgres
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-        django: ["2.2", "3.2", "4.2"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
       fail-fast: false
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v2
-    - name: Build steps
-      uses: ./.github/actions/drf-integrations-framework-build
+      uses: actions/checkout@v3
+
+    - uses: ./.github/actions/drf-integrations-framework-build
       with:
-        python-version: ${{ matrix.python }}
-        django-version: ${{ matrix.django }}
-    - name: Test with pytest
-      run: |
-        poetry run pytest --no-migrations
+        python-version: ${{ matrix.python-version }}
