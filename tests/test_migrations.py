@@ -5,7 +5,7 @@ from io import StringIO
 
 
 @pytest.mark.django_db
-@pytest.skip
+@pytest.mark.skip
 @override_settings(MIGRATION_MODULES={})
 def test_no_missing_migrations():
     """
