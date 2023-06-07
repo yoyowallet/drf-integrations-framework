@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.db import models, router, transaction
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _L
+from django.utils.translation import gettext_lazy as _L
 from oauth2_provider.models import AbstractAccessToken as OAuthAbstractAccessToken
 from oauth2_provider.models import AbstractApplication as OAuthAbstractApplication
 from oauth2_provider.models import AbstractGrant as OAuthAbstractGrant

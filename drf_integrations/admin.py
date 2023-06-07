@@ -1,14 +1,20 @@
+from django import VERSION
 from django.contrib import admin, messages
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.html import format_html
-from django.utils.http import urlquote
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
 from drf_integrations import forms, models
 from drf_integrations.integrations import Registry
+
+# Django 4+ no longer provides django.utils.http.urlquote
+if VERSION[0] >= 4:
+    from urllib.parse import quote
+else:
+    from django.utils.http import urlquote as quote
 
 
 class ApplicationInstallationAdmin(admin.ModelAdmin):
@@ -57,7 +63,7 @@ class ApplicationInstallationAdmin(admin.ModelAdmin):
 
             msg_dict = {
                 "name": opts.verbose_name,
-                "obj": format_html('<a href="{}">{}</a>', urlquote(request.path), obj),
+                "obj": format_html('<a href="{}">{}</a>', quote(request.path), obj),
             }
             msg = format_html(
                 _(

@@ -72,7 +72,7 @@ the type of JSON field your DB uses. On the other hand, you will have to set the
 relate the integrations.
 ```python
 DB_BACKEND_JSON_FIELD = "django.db.models.JSONField"
-INTEGRATIONS_APPLICATION_INSTALLATION_INSTALL_ATTRIBUTE = "organisation"
+INTEGRATIONS_APPLICATION_INSTALLATION_INSTALL_ATTRIBUTE = "target_id"
 ```
 Finally, you have to set the list of integrations that are available in your system (see the following section to learn
 about creating integrations).
