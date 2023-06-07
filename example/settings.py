@@ -146,7 +146,7 @@ OAUTH2_PROVIDER_APPLICATION_MODEL = "drf_integrations.Application"
 OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = "drf_integrations.AccessToken"
 OAUTH2_PROVIDER_GRANT_MODEL = "drf_integrations.Grant"
 OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = "drf_integrations.RefreshToken"
-OAUTH2_PROVIDER_ID_TOKEN_MODEL = "oauth2_provider.IDToken"
+OAUTH2_PROVIDER_ID_TOKEN_MODEL = "drf_integrations.IDToken"
 
 INTEGRATIONS_APPLICATION_INSTALLATION_MODEL = "drf_integrations.ApplicationInstallation"
 INTEGRATIONS_APPLICATION_INSTALLATION_INSTALL_ATTRIBUTE = "target_id"

@@ -5,6 +5,7 @@ import oauth2_provider.generators
 import oauth2_provider.models
 from django.conf import settings
 from django.db import migrations, models
+import uuid
 
 
 class Migration(migrations.Migration):
@@ -15,6 +16,25 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.CreateModel(
+            name='IDToken',
+            fields=[
+                ('id', models.BigAutoField(primary_key=True, serialize=False)),
+                ('jti', models.UUIDField(default=uuid.uuid4, editable=False, unique=True, verbose_name='JWT Token ID')),
+                ('expires', models.DateTimeField()),
+                ('scope', models.TextField(blank=True)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+                ('updated', models.DateTimeField(auto_now=True)),
+                ('application', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                                  to=settings.OAUTH2_PROVIDER_APPLICATION_MODEL)),
+                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                           related_name='drf_integrations_idtoken', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'abstract': False,
+                'swappable': 'OAUTH2_PROVIDER_ID_TOKEN_MODEL',
+            },
+        ),
         migrations.AddField(
             model_name="accesstoken",
             name="id_token",
@@ -27,20 +47,6 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="application",
-            name="algorithm",
-            field=models.CharField(
-                blank=True,
-                choices=[
-                    ("", "No OIDC support"),
-                    ("RS256", "RSA with SHA-2 256"),
-                    ("HS256", "HMAC with SHA-2 256"),
-                ],
-                default="",
-                max_length=5,
-            ),
-        ),
-        migrations.AddField(
             model_name="grant",
             name="claims",
             field=models.TextField(blank=True),
@@ -49,6 +55,11 @@ class Migration(migrations.Migration):
             model_name="grant",
             name="nonce",
             field=models.CharField(blank=True, default="", max_length=255),
+        ),
+        migrations.AlterField(
+            model_name="grant",
+            name="redirect_uri",
+            field=models.TextField(),
         ),
         migrations.AlterField(
             model_name="application",
@@ -75,9 +86,23 @@ class Migration(migrations.Migration):
                 max_length=255,
             ),
         ),
-        migrations.AlterField(
-            model_name="grant",
-            name="redirect_uri",
-            field=models.TextField(),
+        migrations.AddField(
+            model_name='application',
+            name='post_logout_redirect_uris',
+            field=models.TextField(blank=True, help_text='Allowed Post Logout URIs list, space separated'),
+        ),
+        migrations.AddField(
+            model_name="application",
+            name="algorithm",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("", "No OIDC support"),
+                    ("RS256", "RSA with SHA-2 256"),
+                    ("HS256", "HMAC with SHA-2 256"),
+                ],
+                default="",
+                max_length=5,
+            ),
         ),
     ]

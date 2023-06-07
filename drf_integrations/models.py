@@ -12,6 +12,7 @@ from oauth2_provider.models import AbstractAccessToken as OAuthAbstractAccessTok
 from oauth2_provider.models import AbstractApplication as OAuthAbstractApplication
 from oauth2_provider.models import AbstractGrant as OAuthAbstractGrant
 from oauth2_provider.models import AbstractRefreshToken as OAuthAbstractRefreshToken
+from oauth2_provider.models import AbstractIDToken as OAuthAbstractIDToken
 from oauth2_provider.scopes import get_scopes_backend
 from oauth2_provider.settings import oauth2_settings
 from uuid import uuid4
@@ -259,6 +260,16 @@ class AbstractGrant(OAuthAbstractGrant):
 class Grant(AbstractGrant):
     class Meta(AbstractGrant.Meta):
         swappable = "OAUTH2_PROVIDER_GRANT_MODEL"
+
+
+class AbstractIdToken(OAuthAbstractIDToken):
+    class Meta(OAuthAbstractIDToken.Meta):
+        abstract = True
+
+
+class IDToken(AbstractIdToken):
+    class Meta(AbstractGrant.Meta):
+        swappable = "OAUTH2_PROVIDER_ID_TOKEN_MODEL"
 
 
 def _get_application_installation_class():
