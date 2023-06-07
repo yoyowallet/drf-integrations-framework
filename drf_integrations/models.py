@@ -262,12 +262,12 @@ class Grant(AbstractGrant):
         swappable = "OAUTH2_PROVIDER_GRANT_MODEL"
 
 
-class AbstractIdToken(OAuthAbstractIDToken):
+class AbstractIDToken(OAuthAbstractIDToken):
     class Meta(OAuthAbstractIDToken.Meta):
         abstract = True
 
 
-class IDToken(AbstractIdToken):
+class IDToken(AbstractIDToken):
     class Meta(AbstractGrant.Meta):
         swappable = "OAUTH2_PROVIDER_ID_TOKEN_MODEL"
 
