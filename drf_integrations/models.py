@@ -11,8 +11,8 @@ from django.utils.translation import gettext_lazy as _L
 from oauth2_provider.models import AbstractAccessToken as OAuthAbstractAccessToken
 from oauth2_provider.models import AbstractApplication as OAuthAbstractApplication
 from oauth2_provider.models import AbstractGrant as OAuthAbstractGrant
-from oauth2_provider.models import AbstractRefreshToken as OAuthAbstractRefreshToken
 from oauth2_provider.models import AbstractIDToken as OAuthAbstractIDToken
+from oauth2_provider.models import AbstractRefreshToken as OAuthAbstractRefreshToken
 from oauth2_provider.scopes import get_scopes_backend
 from oauth2_provider.settings import oauth2_settings
 from uuid import uuid4
