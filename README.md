@@ -13,7 +13,8 @@ between the source/destiny of events, how these requests are authenticated and t
 - Python 3.7+
 - Django 2.2+
 - Django REST Framework 3.9.2+
-- Django OAuth Toolkit 1.3-1.4
+- Django OAuth Toolkit 2+
+- Pillow 7+
 
 ## Installation
 
@@ -143,4 +144,4 @@ See [Releases](https://github.com/yoyowallet/drf-integrations-framework/releases
 
 ## Authors
 DRF Integrations Framework is an original idea by [@jianyuan](https://github.com/jianyuan), developed and maintained by
-the platform team at [@yoyowallet](https://github.com/yoyowallet).
+the loyalty domain team at [@saltpay](https://github.com/saltpay).
