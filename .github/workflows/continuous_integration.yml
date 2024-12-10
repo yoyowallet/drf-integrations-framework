@@ -36,7 +36,9 @@ jobs:
       PGDATABASE: postgres
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.9", "3.10", "3.11"]
+        # We can support Python 3.12 and 3.13 when we remove support for Django 3.2
+        # python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
       fail-fast: false
 
     steps:
