@@ -11,7 +11,8 @@ from drf_integrations import forms, models
 from drf_integrations.integrations import Registry
 
 # Django 4+ no longer provides django.utils.http.urlquote
-if VERSION[0] >= 4:
+MAJOR_VERSION = 4
+if VERSION[0] >= MAJOR_VERSION:
     from urllib.parse import quote
 else:
     from django.utils.http import urlquote as quote
@@ -74,7 +75,7 @@ class ApplicationInstallationAdmin(admin.ModelAdmin):
             )
             self.message_user(request, msg, messages.SUCCESS)
             redirect_url = reverse(
-                "admin:%s_%s_change" % (opts.app_label, opts.model_name),
+                f"admin:{opts.app_label}_{opts.model_name}_change",
                 args=(obj.pk,),
                 current_app=self.admin_site.name,
             )
