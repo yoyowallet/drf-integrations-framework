@@ -8,10 +8,10 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.10.0
+      - name: Set up Python 3.9.0
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.9"
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
 
@@ -36,7 +36,7 @@ jobs:
       PGDATABASE: postgres
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
       fail-fast: false
 
     steps:
