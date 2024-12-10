@@ -1,5 +1,6 @@
-import pytest
 from contextlib import ExitStack as does_not_raise
+
+import pytest
 
 from drf_integrations import utils
 

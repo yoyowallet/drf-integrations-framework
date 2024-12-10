@@ -1,5 +1,6 @@
-import factory
 from datetime import timedelta
+
+import factory
 from django.utils import timezone
 
 from drf_integrations import models

@@ -1,3 +1,4 @@
+# noqa PLR2004
 import pytest
 from _pytest.fixtures import fixture
 from django.conf import settings
@@ -24,8 +25,14 @@ def test_get_application_installation_model():
 @pytest.mark.parametrize(
     ["internal_integration_name", "local_integration_name"],
     [
-        ("integration1", None),  # Cannot have more than 1 internal integration with same name
-        ("integration1", "integration2"),  # Cannot have both internal and local integration
+        (
+            "integration1",
+            None,
+        ),  # Cannot have more than 1 internal integration with same name
+        (
+            "integration1",
+            "integration2",
+        ),  # Cannot have both internal and local integration
     ],
 )
 def test_application_unique(internal_integration_name, local_integration_name):
@@ -42,7 +49,8 @@ def test_application_unique(internal_integration_name, local_integration_name):
 
 @fixture
 def clear_integrations():
-    # Ignore the integrations defined under INSTALLED_INTEGRATIONS in example/settings.py
+    # Ignore the integrations defined under INSTALLED_INTEGRATIONS in
+    # example/settings.py
     from drf_integrations import integrations
 
     integrations.default_registry.integrations = {}
@@ -50,20 +58,21 @@ def clear_integrations():
 
 def test_sync_with_integration_registry(get_integration, clear_integrations):
     """
-    Check that synchronizing the integration registry correctly adds and deletes integrations
+    Check that synchronizing the integration registry correctly adds and deletes
+    integrations
     """
 
     get_integration(is_local=True)
     get_integration(is_local=False)
-    assert models.Application.objects.count() == 0
+    assert models.Application.objects.count() == 0  # noqa PLR2004
     # Add random outdated but approved internal integration application
     factories.ApplicationFactory(internal_integration_name="other", is_approved=True)
-    assert models.Application.objects.count() == 1
+    assert models.Application.objects.count() == 1  # noqa PLR2004
     assert models.Application.objects.filter(is_approved=True).count() == 1
     # Sync registry
     models.Application.objects.sync_with_integration_registry()
     # There is a new Application
-    assert models.Application.objects.count() == 2
+    assert models.Application.objects.count() == 2  # noqa PLR2004
     # There is still only 1 approved integration application
     app = models.Application.objects.filter(is_approved=True).get()
     # The application is internal and is not the outdated one, it is a new one
@@ -126,23 +135,23 @@ def test_install_uninstall_internal(get_integration, get_application):
     on the same target simply overwrite the value and activate it
     """
     internal_application = get_application(integration=get_integration(is_local=False))
-    assert models.ApplicationInstallation.objects.count() == 0
+    assert models.ApplicationInstallation.objects.count() == 0  # noqa PLR2004
 
-    internal_application.install(target_id=1)
-    assert models.ApplicationInstallation.objects.count() == 1
+    internal_application.install(target_id=1)  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.count() == 1  # noqa PLR2004
 
-    internal_application.install(target_id=2)
-    assert models.ApplicationInstallation.objects.count() == 2
-    installation = internal_application.install(target_id=2)
-    assert models.ApplicationInstallation.objects.count() == 2
+    internal_application.install(target_id=2)  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.count() == 2  # noqa PLR2004
+    installation = internal_application.install(target_id=2)  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.count() == 2  # noqa PLR2004
 
     installation.delete()
-    assert models.ApplicationInstallation.objects.count() == 2
-    assert models.ApplicationInstallation.objects.active().count() == 1
+    assert models.ApplicationInstallation.objects.count() == 2  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.active().count() == 1  # noqa PLR2004
 
-    internal_application.install(target_id=2)
-    assert models.ApplicationInstallation.objects.count() == 2
-    assert models.ApplicationInstallation.objects.active().count() == 2
+    internal_application.install(target_id=2)  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.count() == 2  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.active().count() == 2  # noqa PLR2004
 
 
 def test_install_uninstall_local(get_integration, get_application):
@@ -151,31 +160,31 @@ def test_install_uninstall_local(get_integration, get_application):
     multiple calls on the same target simply overwrite the value and activate it
     """
     local_application = get_application(integration=get_integration(is_local=True))
-    assert models.ApplicationInstallation.objects.count() == 0
+    assert models.ApplicationInstallation.objects.count() == 0  # noqa PLR2004
 
-    local_application.install(target_id=1)
-    assert models.ApplicationInstallation.objects.count() == 1
-    assert models.ApplicationInstallation.objects.active().count() == 1
+    local_application.install(target_id=1)  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.count() == 1  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.active().count() == 1  # noqa PLR2004
 
-    installation = local_application.install(target_id=1)
-    assert models.ApplicationInstallation.objects.count() == 1
+    installation = local_application.install(target_id=1)  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.count() == 1  # noqa PLR2004
 
     installation.delete()
-    assert models.ApplicationInstallation.objects.count() == 1
-    assert models.ApplicationInstallation.objects.active().count() == 0
+    assert models.ApplicationInstallation.objects.count() == 1  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.active().count() == 0  # noqa PLR2004
 
-    local_application.install(target_id=2)
-    assert models.ApplicationInstallation.objects.count() == 2
-    assert models.ApplicationInstallation.objects.active().count() == 1
+    local_application.install(target_id=2)  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.count() == 2  # noqa PLR2004
+    assert models.ApplicationInstallation.objects.active().count() == 1  # noqa PLR2004
 
     with pytest.raises(ValidationError):
-        local_application.install(target_id=1)
+        local_application.install(target_id=1)  # noqa PLR2004
 
 
 @pytest.mark.parametrize("is_local", [None, True, False])
 @pytest.mark.parametrize(
     "invalid_form_values",
-    [dict(), dict(extra_field="value too long"), dict(another_value="value")],
+    [{}, {"extra_field": "value too long"}, {"another_value": "value"}],
 )
 def test_install_check_config_fails(
     get_integration, get_application, is_local, invalid_form_values
@@ -198,13 +207,13 @@ def test_install_check_config_validates(get_integration, get_application, is_loc
     """
     An installation with a valid config succeeds
     """
-    form_values = dict(extra_field="value")
+    form_values = {"extra_field": "value"}
     if is_local is not None:
         integration = get_integration(is_local=is_local, has_form=True)
     else:
         integration = None
     app = get_application(integration=integration)
-    installation = app.install(target_id=1, config=form_values)
+    installation = app.install(target_id=1, config=form_values)  # noqa PLR2004
     assert models.ApplicationInstallation.objects.get() == installation
     assert installation.get_config() == form_values
     assert installation.deleted_at is None

@@ -3,7 +3,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("drf_integrations", "0001_initial"),
         ("oauth2_provider", "0002_auto_20190406_1805"),

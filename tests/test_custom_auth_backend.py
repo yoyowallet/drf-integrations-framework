@@ -38,7 +38,9 @@ class InternalIntegrationAuthentication(BaseAuthentication):
             installation = (
                 ApplicationInstallation.objects.select_related("application")
                 .active()
-                .get(**integration.get_installation_lookup_from_request(request=request))
+                .get(
+                    **integration.get_installation_lookup_from_request(request=request)
+                )
             )
         except (
             ApplicationInstallation.DoesNotExist,
@@ -66,7 +68,7 @@ class TestInternalViewset(ViewSet):
 def test_multiple_auth_backends_none_valid(get_application):
     integration = integrations.register(IntegrationWithAuth)
     application = get_application(integration=integration)
-    application.install(target_id=1, config=dict(extra_field="mysecret"))
+    application.install(target_id=1, config={"extra_field": "mysecret"})
 
     factory = APIRequestFactory()
     view = TestInternalViewset.as_view(
@@ -84,7 +86,7 @@ def test_multiple_auth_backends_internal_pass(get_application):
     integration = integrations.register(IntegrationWithAuth)
     application = get_application(integration=integration)
     secret = "mysecret"
-    installation = application.install(target_id=1, config=dict(extra_field=secret))
+    installation = application.install(target_id=1, config={"extra_field": secret})
     context = Context(installation=installation)
 
     factory = APIRequestFactory()
@@ -96,7 +98,9 @@ def test_multiple_auth_backends_internal_pass(get_application):
     response = view(request)
 
     assert response.status_code == status.HTTP_200_OK
-    assert isinstance(response.request.successful_authenticator, InternalIntegrationAuthentication)
+    assert isinstance(
+        response.request.successful_authenticator, InternalIntegrationAuthentication
+    )
     assert isinstance(response.request.user, AnonymousUser)
     assert response.request.auth == context
     assert response.request.auth_context == context

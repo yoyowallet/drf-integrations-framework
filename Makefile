@@ -7,3 +7,11 @@ deps:
 tests: deps
 	poetry run tox $(pytest_args)
 	#poetry run pytest --no-migrations
+
+.PHONY: tree
+tree:
+	tree -I __pycache__ -I *.pyc 2>/dev/null
+
+.PHONY: showoutdatedpackages
+showoutdatedpackages:
+	poetry show --outdated -T

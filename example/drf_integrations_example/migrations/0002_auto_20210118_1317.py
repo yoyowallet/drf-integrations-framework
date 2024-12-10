@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("drf_integrations_example", "0001_initial"),
     ]
@@ -13,6 +12,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="user",
             name="first_name",
-            field=models.CharField(blank=True, max_length=150, verbose_name="first name"),
+            field=models.CharField(
+                blank=True, max_length=150, verbose_name="first name"
+            ),
         ),
     ]

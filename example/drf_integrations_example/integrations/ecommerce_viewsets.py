@@ -15,7 +15,9 @@ class PurchasesViewSet(viewsets.ViewSet):
 
     def create(self, request):
         user_id = request.data["user_id"]
-        integration = request.auth_context.installation.application.get_integration_instance()
+        integration = (
+            request.auth_context.installation.application.get_integration_instance()
+        )
         try:
             integration_user = models.IntegrationUser.objects.get(
                 integration_name=integration.name,
@@ -24,7 +26,7 @@ class PurchasesViewSet(viewsets.ViewSet):
             )
         except models.IntegrationUser.DoesNotExist:
             return Response(
-                data=dict(error=f"User {user_id} does not exist"),
+                data={"error": f"User {user_id} does not exist"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
