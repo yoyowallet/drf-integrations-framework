@@ -291,8 +291,12 @@ def _get_application_installation_class():
 
         class Meta:
             abstract = True
-            unique_together = [
-                ("application", get_application_installation_install_attribute_name())
+            constraints = [
+                models.UniqueConstraint(
+                    fields=['application',
+                            get_application_installation_install_attribute_name()],
+                    name='%(app_label)s_%(class)s_application_installation_unique'
+                ),
             ]
 
         def __str__(self):

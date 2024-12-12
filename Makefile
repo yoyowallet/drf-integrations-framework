@@ -1,7 +1,8 @@
 .PHONY: help
 help:
 	@echo "Please use 'make <target>' where <target> is one of"
-	@echo "  deps                 to install dependencies for local development"
+	@echo "  deps                 re-install all dependencies for local development"
+	@echo "  deps-clean			  Destroys the current environment and creates a new one.
 	@echo "  clean                to clean up environment"
 	@echo "  lint                 runs linting on all the files using Ruff"
 	@echo "  tests                to run tests"
@@ -25,6 +26,12 @@ lint:
 clean:
 	rm -rf .tox/ .pytest_cache/ dist/ htmlcov/ .coverage coverage.xml db.sqlite3
 	find . -type f -name "*.pyc" -delete
+
+.PHONY: deps-clean
+deps-clean:
+	# Remove the environment and ignore errors if it does not exist.
+	poetry env remove 3.9 2>/dev/null || true
+	poetry env use 3.9
 
 .PHONY: tests
 tests: coverage
