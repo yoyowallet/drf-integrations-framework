@@ -88,14 +88,18 @@ class BaseIntegrationForm(forms.Form):
         self._application = application
         self._installation = None
         if self._application:
-            integration_check = self._application.get_integration_instance(integration.__class__)
+            integration_check = self._application.get_integration_instance(
+                integration.__class__
+            )
             if integration != integration_check:
                 raise ValueError(
                     f"Provided integration {integration} does not match for "
                     f"given application {self._application}"
                 )
             target_filter = {target_id_name: target.pk}
-            self._installation = self._application.installations.filter(**target_filter).first()
+            self._installation = self._application.installations.filter(
+                **target_filter
+            ).first()
 
         if self._installation:
             config = self._installation.get_config()
@@ -105,9 +109,6 @@ class BaseIntegrationForm(forms.Form):
 
 
 class BaseClient(object):
-    def __init__(self, **kwargs):
-        ...
-
     @classmethod
     def from_context(cls, context: Context, **kwargs) -> "BaseClient":
         initkwargs = copy.deepcopy(context.installation.get_config())
@@ -123,9 +124,6 @@ class BaseIntegration:
     is_local: bool = False
     is_installable: bool = True
     is_uninstallable: bool = False
-
-    def __init__(self, **kwargs):
-        ...
 
     def __eq__(self, other):
         """
@@ -223,7 +221,11 @@ class BaseIntegration:
 
     @classmethod
     def get_installation_lookup_from_request(
-        cls, request: "Request", *, application: "Optional[models.Application]" = None, **kwargs
+        cls,
+        request: "Request",
+        *,
+        application: "Optional[models.Application]" = None,
+        **kwargs,
     ) -> Dict:
         """
         Return a lookup filter suitable for models that subclass
@@ -240,7 +242,9 @@ class BaseIntegration:
                     "the application argument is necessary to be able to look it up"
                 )
             # Local integrations only have 1 installation always, so simply retrieve it
-            return dict(application__local_integration_name=cls.name, application=application)
+            return dict(
+                application__local_integration_name=cls.name, application=application
+            )
 
         # Internal integrations may have different behaviours (links an installation
         # config field to a request header, a cookie...), so each subclass should

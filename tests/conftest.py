@@ -9,10 +9,10 @@ from pytest_django.lazy_django import skip_if_no_django
 from drf_integrations import integrations
 from drf_integrations.integrations.base import BaseIntegration
 from tests.integration_samples import (
-    TestInternalIntegration,
-    TestInternalWithFormIntegration,
-    TestLocalIntegration,
-    TestLocalWithFormIntegration,
+    InternalIntegrationTest,
+    InternalWithFormIntegrationTest,
+    LocalIntegrationTest,
+    LocalWithFormIntegrationTest,
 )
 
 if TYPE_CHECKING:
@@ -98,17 +98,19 @@ def reset_registry():
 
 @pytest.fixture(scope="session")
 def get_integration():
-    def getter(*, is_local: bool = False, has_form: bool = False, register: bool = True):
+    def getter(
+        *, is_local: bool = False, has_form: bool = False, register: bool = True
+    ):
         if is_local:
             if has_form:
-                integration = TestLocalWithFormIntegration
+                integration = LocalWithFormIntegrationTest
             else:
-                integration = TestLocalIntegration
+                integration = LocalIntegrationTest
         else:
             if has_form:
-                integration = TestInternalWithFormIntegration
+                integration = InternalWithFormIntegrationTest
             else:
-                integration = TestInternalIntegration
+                integration = InternalIntegrationTest
 
         if register:
             integrations.register(integration)
@@ -125,9 +127,13 @@ def get_application():
 
         if integration:
             if integration.is_local:
-                app = factories.ApplicationFactory(local_integration_name=integration.name)
+                app = factories.ApplicationFactory(
+                    local_integration_name=integration.name
+                )
             else:
-                app = factories.ApplicationFactory(internal_integration_name=integration.name)
+                app = factories.ApplicationFactory(
+                    internal_integration_name=integration.name
+                )
         else:
             app = factories.ApplicationFactory()
         return app

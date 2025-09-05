@@ -28,7 +28,9 @@ class IntegrationOAuth2Authentication(OAuth2Authentication):
 
     ensure_integration_classes = ()
 
-    def authenticate(self, request: "Request") -> "Optional[Tuple[AnyUser, models.AccessToken]]":
+    def authenticate(
+        self, request: "Request"
+    ) -> "Optional[Tuple[AnyUser, models.AccessToken]]":
         result = super().authenticate(request)
 
         if hasattr(request, "oauth2_error") and request.oauth2_error:

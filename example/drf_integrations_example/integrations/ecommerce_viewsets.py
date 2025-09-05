@@ -15,7 +15,9 @@ class PurchasesViewSet(viewsets.ViewSet):
 
     def create(self, request):
         user_id = request.data["user_id"]
-        integration = request.auth_context.installation.application.get_integration_instance()
+        integration = (
+            request.auth_context.installation.application.get_integration_instance()
+        )
         try:
             integration_user = models.IntegrationUser.objects.get(
                 integration_name=integration.name,

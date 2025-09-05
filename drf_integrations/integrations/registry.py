@@ -15,7 +15,9 @@ class Registry:
     def __init__(self):
         self.integrations: Dict[str, BaseIntegration] = {}
 
-    def register(self, integration_cls: Type[BaseIntegration], **kwargs) -> BaseIntegration:
+    def register(
+        self, integration_cls: Type[BaseIntegration], **kwargs
+    ) -> BaseIntegration:
         """Register an integration."""
         if integration_cls.name in self.integrations:
             raise ImproperlyConfigured(
@@ -35,7 +37,9 @@ class Registry:
         """
         if is_local is not None:
             integrations = {
-                value for value in self.integrations.values() if value.is_local is is_local
+                value
+                for value in self.integrations.values()
+                if value.is_local is is_local
             }
         else:
             integrations = set(self.integrations.values())
@@ -55,7 +59,9 @@ class Registry:
         try:
             if isinstance(name_or_class, str):
                 integration = self.integrations[name_or_class]
-            elif inspect.isclass(name_or_class) and issubclass(name_or_class, BaseIntegration):
+            elif inspect.isclass(name_or_class) and issubclass(
+                name_or_class, BaseIntegration
+            ):
                 integration = self.integrations[name_or_class.name]
             else:
                 raise ValueError("invalid name or base integration class")

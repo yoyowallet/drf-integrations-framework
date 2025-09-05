@@ -10,7 +10,7 @@ from drf_integrations import integrations
 from drf_integrations.auth_backends import IntegrationOAuth2Authentication
 from drf_integrations.integrations.base import Context
 from drf_integrations.models import ApplicationInstallation
-from tests.integration_samples import TestInternalWithFormIntegration
+from tests.integration_samples import InternalWithFormIntegrationTest
 from tests.utils import WrapperResponse
 
 
@@ -21,7 +21,7 @@ class InternalPermission(BasePermission):
         )
 
 
-class IntegrationWithAuth(TestInternalWithFormIntegration):
+class IntegrationWithAuthTest(InternalWithFormIntegrationTest):
     name = "test_internal_form_auth"
 
     @classmethod
@@ -33,12 +33,14 @@ class IntegrationWithAuth(TestInternalWithFormIntegration):
 
 class InternalIntegrationAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        integration = integrations.get(IntegrationWithAuth)
+        integration = integrations.get(IntegrationWithAuthTest)
         try:
             installation = (
                 ApplicationInstallation.objects.select_related("application")
                 .active()
-                .get(**integration.get_installation_lookup_from_request(request=request))
+                .get(
+                    **integration.get_installation_lookup_from_request(request=request)
+                )
             )
         except (
             ApplicationInstallation.DoesNotExist,
@@ -51,7 +53,7 @@ class InternalIntegrationAuthentication(BaseAuthentication):
         return AnonymousUser(), request.auth_context
 
 
-class TestInternalViewset(ViewSet):
+class InternalViewsetTest(ViewSet):
     authentication_classes = (
         IntegrationOAuth2Authentication,
         InternalIntegrationAuthentication,
@@ -64,12 +66,12 @@ class TestInternalViewset(ViewSet):
 
 @pytest.mark.django_db
 def test_multiple_auth_backends_none_valid(get_application):
-    integration = integrations.register(IntegrationWithAuth)
+    integration = integrations.register(IntegrationWithAuthTest)
     application = get_application(integration=integration)
     application.install(target_id=1, config=dict(extra_field="mysecret"))
 
     factory = APIRequestFactory()
-    view = TestInternalViewset.as_view(
+    view = InternalViewsetTest.as_view(
         {"post": "create"},
     )
     request = factory.post("", HTTP_MY_HEADER="randomstr")
@@ -81,14 +83,14 @@ def test_multiple_auth_backends_none_valid(get_application):
 
 @pytest.mark.django_db
 def test_multiple_auth_backends_internal_pass(get_application):
-    integration = integrations.register(IntegrationWithAuth)
+    integration = integrations.register(IntegrationWithAuthTest)
     application = get_application(integration=integration)
     secret = "mysecret"
     installation = application.install(target_id=1, config=dict(extra_field=secret))
     context = Context(installation=installation)
 
     factory = APIRequestFactory()
-    view = TestInternalViewset.as_view(
+    view = InternalViewsetTest.as_view(
         {"post": "create"},
     )
     request = factory.post("", HTTP_MY_HEADER=secret)
@@ -96,7 +98,9 @@ def test_multiple_auth_backends_internal_pass(get_application):
     response = view(request)
 
     assert response.status_code == status.HTTP_200_OK
-    assert isinstance(response.request.successful_authenticator, InternalIntegrationAuthentication)
+    assert isinstance(
+        response.request.successful_authenticator, InternalIntegrationAuthentication
+    )
     assert isinstance(response.request.user, AnonymousUser)
     assert response.request.auth == context
     assert response.request.auth_context == context

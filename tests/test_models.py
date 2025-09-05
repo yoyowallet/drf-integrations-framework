@@ -24,8 +24,14 @@ def test_get_application_installation_model():
 @pytest.mark.parametrize(
     ["internal_integration_name", "local_integration_name"],
     [
-        ("integration1", None),  # Cannot have more than 1 internal integration with same name
-        ("integration1", "integration2"),  # Cannot have both internal and local integration
+        (
+            "integration1",
+            None,
+        ),  # Cannot have more than 1 internal integration with same name
+        (
+            "integration1",
+            "integration2",
+        ),  # Cannot have both internal and local integration
     ],
 )
 def test_application_unique(internal_integration_name, local_integration_name):
@@ -79,18 +85,18 @@ def test_get_integration_instance(get_integration):
     internal_integration = get_integration(is_local=False)
     assert models.Application.objects.count() == 0
     app = models.Application.objects.get_by_internal_integration(
-        integration_samples.TestInternalIntegration
+        integration_samples.InternalIntegrationTest
     )
     assert models.Application.objects.count() == 1
-    assert app.get_integration_instance() == integration_samples.TestInternalIntegration
-    assert integration_samples.TestInternalIntegration == internal_integration
+    assert app.get_integration_instance() == integration_samples.InternalIntegrationTest
+    assert integration_samples.InternalIntegrationTest == internal_integration
 
     app = models.Application.objects.get_by_internal_integration(
-        integration_samples.TestInternalIntegration
+        integration_samples.InternalIntegrationTest
     )
     assert models.Application.objects.count() == 1
-    assert app.get_integration_instance() == integration_samples.TestInternalIntegration
-    assert integration_samples.TestInternalIntegration == internal_integration
+    assert app.get_integration_instance() == integration_samples.InternalIntegrationTest
+    assert integration_samples.InternalIntegrationTest == internal_integration
 
 
 def test_get_integration_instance_local_error(get_integration):

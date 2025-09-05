@@ -15,7 +15,7 @@ class ParentForm(forms.Form):
     def __init__(self, data=None, *args, **kwargs):
         super().__init__(data, *args, **kwargs)
         self.fields = copy.deepcopy(self.base_fields)
-        for name, field in integration_samples.TestForm.base_fields.items():
+        for name, field in integration_samples.FormTest.base_fields.items():
             self.fields[name] = field
 
 
@@ -27,7 +27,7 @@ def test_clean_form_data_pass():
     form = ParentForm(data=dict(main_field="1", extra_field="value"))
     assert form.is_valid()
     # TestForm can validate the subset of fields corresponds to it
-    data = integration_samples.TestForm.clean_form_data(form)
+    data = integration_samples.FormTest.clean_form_data(form)
     assert data == {"main_field": 1, "extra_field": "value"}
 
 
@@ -42,7 +42,7 @@ def test_clean_form_data_fail():
     assert form.is_valid()
     # When the same form is forwarded to TestForm validation it fails
     with pytest.raises(forms.ValidationError) as exc:
-        integration_samples.TestForm.clean_form_data(form)
+        integration_samples.FormTest.clean_form_data(form)
 
     assert exc.value.message_dict == {"extra_field": ["Value cannot be forbidden"]}
 
@@ -51,8 +51,10 @@ def test_clean(mocker):
     """
     .clean() should call clean_form_data so that specific validation is done
     """
-    form = integration_samples.TestForm(data=dict(extra_field="value"))
-    clean_form_data = mocker.patch.object(integration_samples.TestForm, "clean_form_data")
+    form = integration_samples.FormTest(data=dict(extra_field="value"))
+    clean_form_data = mocker.patch.object(
+        integration_samples.FormTest, "clean_form_data"
+    )
     assert form.is_valid()
     clean_form_data.assert_called_with(form)
 
@@ -60,7 +62,9 @@ def test_clean(mocker):
 @pytest.mark.parametrize("use_application", [True, False])
 @pytest.mark.parametrize("use_installation", [True, False])
 @pytest.mark.django_db
-def test_set_initial_values(get_integration, get_application, use_application, use_installation):
+def test_set_initial_values(
+    get_integration, get_application, use_application, use_installation
+):
     """
     .set_initial_values() should correctly store the passed arguments and
     it should fetch the correct values (if any) from them (i.e. installation)
@@ -85,7 +89,9 @@ def test_set_initial_values(get_integration, get_application, use_application, u
                 target_id=mock_target.pk, config=dict(extra_field=initial_value)
             )
 
-    form.set_initial_values(target=mock_target, integration=integration(), application=app)
+    form.set_initial_values(
+        target=mock_target, integration=integration(), application=app
+    )
 
     # Check the form correctly stored and configured the parameters
     assert form._target == mock_target
@@ -107,7 +113,9 @@ def test_set_initial_values_wrong_integration(get_integration, get_application):
     app = get_application(integration=integration1)
 
     with pytest.raises(ValueError):
-        form.set_initial_values(target=mock_target, integration=integration2, application=app)
+        form.set_initial_values(
+            target=mock_target, integration=integration2, application=app
+        )
 
 
 @pytest.mark.parametrize(
@@ -121,7 +129,9 @@ def test_check_config(get_integration, has_form, config):
     integration = get_integration(has_form=has_form)
     integration = integrations.get(integration)
     assert integration.check_config(
-        Context(installation=factories.ApplicationInstallationFactory.build(config=config))
+        Context(
+            installation=factories.ApplicationInstallationFactory.build(config=config)
+        )
     )
 
 

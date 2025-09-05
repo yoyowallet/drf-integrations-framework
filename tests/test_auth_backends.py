@@ -6,13 +6,13 @@ from rest_framework.viewsets import ViewSet
 
 from drf_integrations.auth_backends import IntegrationOAuth2Authentication
 from drf_integrations.integrations.base import Context
-from tests.integration_samples import TestLocalWithFormIntegration
+from tests.integration_samples import LocalWithFormIntegrationTest
 from tests.utils import WrapperResponse
 
 REQUIRED_SCOPE = "my_scope"
 
 
-class TestOAuthViewset(ViewSet):
+class OAuthViewsetTest(ViewSet):
     authentication_classes = (IntegrationOAuth2Authentication,)
     permission_classes = (TokenHasScope,)
     required_scopes = [REQUIRED_SCOPE]
@@ -23,7 +23,7 @@ class TestOAuthViewset(ViewSet):
 
 def test_oauth_backend_no_authentication():
     factory = APIRequestFactory()
-    view = TestOAuthViewset.as_view({"post": "create"})
+    view = OAuthViewsetTest.as_view({"post": "create"})
     request = factory.post("")
 
     response = view(request)
@@ -41,7 +41,7 @@ def test_oauth_backend_no_authorization(get_integration, create_access_token):
         token=token_str,
     )
     factory = APIRequestFactory()
-    view = TestOAuthViewset.as_view({"post": "create"})
+    view = OAuthViewsetTest.as_view({"post": "create"})
     request = factory.post("", HTTP_AUTHORIZATION=f"Bearer {token_str}")
 
     response = view(request)
@@ -62,7 +62,7 @@ def test_oauth_backend_internal_token(get_integration, create_access_token):
     token.is_internal_only = True
     token.save()
     factory = APIRequestFactory()
-    view = TestOAuthViewset.as_view({"post": "create"})
+    view = OAuthViewsetTest.as_view({"post": "create"})
     request = factory.post("", HTTP_AUTHORIZATION=f"Bearer {token_str}")
 
     response = view(request)
@@ -82,7 +82,7 @@ def test_oauth_backend_not_installed(get_integration, create_access_token):
     )
     installation.delete()
     factory = APIRequestFactory()
-    view = TestOAuthViewset.as_view({"post": "create"})
+    view = OAuthViewsetTest.as_view({"post": "create"})
     request = factory.post("", HTTP_AUTHORIZATION=f"Bearer {token_str}")
 
     response = view(request)
@@ -102,7 +102,7 @@ def test_oauth_backend_pass(get_integration, create_access_token):
         scope=REQUIRED_SCOPE,
     )
     factory = APIRequestFactory()
-    view = TestOAuthViewset.as_view({"post": "create"})
+    view = OAuthViewsetTest.as_view({"post": "create"})
     request = factory.post("", HTTP_AUTHORIZATION=f"Bearer {token_str}")
 
     response = view(request)
@@ -113,7 +113,7 @@ def test_oauth_backend_pass(get_integration, create_access_token):
 
 
 class IntegrationSpecificAuthentication(IntegrationOAuth2Authentication):
-    ensure_integration_classes = (TestLocalWithFormIntegration,)
+    ensure_integration_classes = (LocalWithFormIntegrationTest,)
 
 
 @pytest.mark.django_db
@@ -128,7 +128,7 @@ def test_oauth_backend_cannot_ensure_integration(get_integration, create_access_
         scope=REQUIRED_SCOPE,
     )
     factory = APIRequestFactory()
-    view = TestOAuthViewset.as_view(
+    view = OAuthViewsetTest.as_view(
         {"post": "create"}, authentication_classes=(IntegrationSpecificAuthentication,)
     )
     request = factory.post("", HTTP_AUTHORIZATION=f"Bearer {token_str}")

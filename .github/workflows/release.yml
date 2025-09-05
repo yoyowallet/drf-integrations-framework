@@ -2,16 +2,39 @@ name: Release
 
 on:
   release:
-    types:
-      - created
+    types: [created]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Run Linting
+      uses: ./.github/actions/lint
+      with:
+        python-version: '3.12'
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v4
+    - name: Run Tests
+      uses: ./.github/actions/tests
+      with:
+        python-version: ${{ matrix.python-version }}
+
   publish:
+    needs: [test, lint]
     runs-on: ubuntu-latest
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+
     - name: Build and publish
-      uses: JRubics/poetry-publish@v1.16
+      uses: JRubics/poetry-publish@v2.0
       with:
         pypi_token: ${{ secrets.PYPI_TOKEN }}

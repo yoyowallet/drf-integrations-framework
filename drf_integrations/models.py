@@ -157,7 +157,9 @@ class AbstractApplication(OAuthAbstractApplication):
         """
         return self.internal_integration_name is not None
 
-    def get_integration_instance(self, *ensure_subclasses: Type[IntegrationT]) -> IntegrationT:
+    def get_integration_instance(
+        self, *ensure_subclasses: Type[IntegrationT]
+    ) -> IntegrationT:
         """
         Returns the instance of the integration class of this application.
 
@@ -175,7 +177,9 @@ class AbstractApplication(OAuthAbstractApplication):
 
         for subclass in ensure_subclasses:
             if not isinstance(integration, subclass):
-                raise ValueError(f"integration {integration} is not a subclass of {subclass}")
+                raise ValueError(
+                    f"integration {integration} is not a subclass of {subclass}"
+                )
 
         return integration
 
@@ -190,10 +194,14 @@ class AbstractApplication(OAuthAbstractApplication):
     # Mutators: Installation
     #
 
-    def install(self, target_id: int, *, config: Dict = None) -> "AbstractApplicationInstallation":
+    def install(
+        self, target_id: int, *, config: Dict = None
+    ) -> "AbstractApplicationInstallation":
         integration = self.get_integration_instance()
         application_installation = get_application_installation_model()
-        target_filter = {get_application_installation_install_attribute_name(): target_id}
+        target_filter = {
+            get_application_installation_install_attribute_name(): target_id
+        }
         if self.local_integration_name:
             other_installations = application_installation.objects.filter(
                 application=self, deleted_at__isnull=True
@@ -216,8 +224,12 @@ class AbstractApplication(OAuthAbstractApplication):
 
     def uninstall(self, target_id: int) -> "AbstractApplicationInstallation":
         application_installation = get_application_installation_model()
-        target_filter = {get_application_installation_install_attribute_name(): target_id}
-        installation = application_installation.objects.get(application=self, **target_filter)
+        target_filter = {
+            get_application_installation_install_attribute_name(): target_id
+        }
+        installation = application_installation.objects.get(
+            application=self, **target_filter
+        )
         installation.delete()
         return installation
 

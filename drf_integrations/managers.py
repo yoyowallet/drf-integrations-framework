@@ -34,7 +34,8 @@ class ApplicationManager(BaseApplicationManager):
         integration_class = integrations.get(name_or_class)
         if integration_class.is_local:
             raise ValueError(
-                f"An internal Application cannot be local, but {integration_class.display_name} is"
+                f"An internal Application cannot be local, but "
+                f"{integration_class.display_name} is"
             )
 
         return self._update_or_create_internal_integration(name=integration_class.name)
@@ -43,7 +44,9 @@ class ApplicationManager(BaseApplicationManager):
         from drf_integrations import integrations
 
         installed_integrations = set(
-            self.filter(is_approved=True).values_list("internal_integration_name", flat=True)
+            self.filter(is_approved=True).values_list(
+                "internal_integration_name", flat=True
+            )
         )
         updated_integrations = set()
 
@@ -72,7 +75,8 @@ class AccessTokenManager(models.Manager):
         integration = application.get_integration_instance()
         if application.local_integration_name or integration.is_local:
             raise ValueError(
-                "Cannot create an AccessToken for a local " f"integration: {integration.name}"
+                "Cannot create an AccessToken for a local "
+                f"integration: {integration.name}"
             )
 
         scope = " ".join(sorted(scope for scope in integration.default_scopes))
@@ -86,6 +90,8 @@ class AccessTokenManager(models.Manager):
             .get_or_create(
                 application=application,
                 scope=scope,
-                defaults=dict(scope=scope, expires=expires, is_internal_only=True, token=token),
+                defaults=dict(
+                    scope=scope, expires=expires, is_internal_only=True, token=token
+                ),
             )
         )

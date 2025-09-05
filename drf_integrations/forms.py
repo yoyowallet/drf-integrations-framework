@@ -84,7 +84,8 @@ class ApplicationInstallationForm(forms.ModelForm):
     def save(self, commit=True):
         if self.integration_form:
             self.instance.config = {
-                name: self.cleaned_data.get(name) for name in self.integration_config_fields
+                name: self.cleaned_data.get(name)
+                for name in self.integration_config_fields
             }
         else:
             self.instance.config = self.cleaned_data.get("config", {})

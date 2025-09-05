@@ -28,7 +28,9 @@ def split_string(string: Optional[AnyString], separator: str = ",") -> List[str]
     return list(iter_split_string(string=string, separator=separator))
 
 
-def iter_split_string(string: Optional[AnyString], separator: str = ",") -> Iterator[str]:
+def iter_split_string(
+    string: Optional[AnyString], separator: str = ","
+) -> Iterator[str]:
     """Generator version of :func:`split_string`."""
 
     if string is None:

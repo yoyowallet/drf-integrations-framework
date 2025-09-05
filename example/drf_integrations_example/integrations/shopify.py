@@ -44,7 +44,9 @@ class ShopifyConfigForm(BaseIntegrationForm):
                     f"integration {application.internal_integration_name}"
                 )
         else:
-            application = Application.objects.get_by_internal_integration(ShopifyIntegration)
+            application = Application.objects.get_by_internal_integration(
+                ShopifyIntegration
+            )
 
         super().set_initial_values(
             target=target,
@@ -90,7 +92,8 @@ class ShopifyIntegration(BaseIntegration):
     def get_installation_lookup_from_request(cls, request: "Request", **kwargs) -> Dict:
         return cls.get_installation_lookup_from_config_values(
             shopify_shop=(
-                request.headers.get("X-Shopify-Hmac-Sha256") or request.query_params.get("shop")
+                request.headers.get("X-Shopify-Hmac-Sha256")
+                or request.query_params.get("shop")
             )
         )
 
@@ -111,7 +114,9 @@ class ShopifyBaseAuthBackend(BaseAuthentication):
             return None
 
         try:
-            installation = ApplicationInstallation.objects.select_related("application").get(
+            installation = ApplicationInstallation.objects.select_related(
+                "application"
+            ).get(
                 **ShopifyIntegration.get_installation_lookup_from_request(
                     request=request, application=None
                 )
@@ -139,7 +144,9 @@ class ShopifyBaseAuthBackend(BaseAuthentication):
             signature_values,
             sha256,
         )
-        if not hmac.compare_digest(signature.encode("utf-8"), new_signature.encode("utf-8")):
+        if not hmac.compare_digest(
+            signature.encode("utf-8"), new_signature.encode("utf-8")
+        ):
             logger.info(
                 "integrations.shopify.invalid_signature",
                 extra=dict(
@@ -217,7 +224,9 @@ class ShopifyWebhookViewSet(viewsets.ViewSet):
     def create(self, request):
         logger.info(
             "integrations.shopify.webhook",
-            extra=dict(data=request.data, installation=request.auth_context.installation),
+            extra=dict(
+                data=request.data, installation=request.auth_context.installation
+            ),
         )
 
         return Response(status=status.HTTP_200_OK)
