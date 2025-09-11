@@ -18,7 +18,7 @@ select = [
         "W",
         "B9"
     ]
-ignore = ["E203", "B904", "DJ001", "DJ006", "W191"]
+ignore = ["E203", "B904", "DJ001", "DJ006", "W191", "PLC0415"]
 
 
 # Add the `line-too-long` rule to the enforced rule set. By default, Ruff omits rules that

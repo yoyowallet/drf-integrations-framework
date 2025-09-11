@@ -68,7 +68,7 @@ class InternalViewsetTest(ViewSet):
 def test_multiple_auth_backends_none_valid(get_application):
     integration = integrations.register(IntegrationWithAuthTest)
     application = get_application(integration=integration)
-    application.install(target_id=1, config=dict(extra_field="mysecret"))
+    application.install(target_id=1, config={"extra_field": "mysecret"})
 
     factory = APIRequestFactory()
     view = InternalViewsetTest.as_view(
@@ -86,7 +86,7 @@ def test_multiple_auth_backends_internal_pass(get_application):
     integration = integrations.register(IntegrationWithAuthTest)
     application = get_application(integration=integration)
     secret = "mysecret"
-    installation = application.install(target_id=1, config=dict(extra_field=secret))
+    installation = application.install(target_id=1, config={"extra_field": secret})
     context = Context(installation=installation)
 
     factory = APIRequestFactory()

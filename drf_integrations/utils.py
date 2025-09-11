@@ -1,7 +1,8 @@
-from typing import Any, Iterable, Iterator, List, Optional, Union
+import logging
+from collections.abc import Iterable, Iterator
+from typing import Any, Optional, Union
 
 import django
-import logging
 from django.utils.module_loading import import_string
 from environ import Env
 
@@ -10,7 +11,7 @@ AnyString = Union[str, Iterable[Any]]
 env = Env()
 
 
-def split_string(string: Optional[AnyString], separator: str = ",") -> List[str]:
+def split_string(string: Optional[AnyString], separator: str = ",") -> list[str]:
     """
     Breaks given *string* by the specified *separator*.
 
@@ -39,19 +40,19 @@ def iter_split_string(
     elif isinstance(string, str):
         parts = str(string).split(separator)
         for part in parts:
-            part = part.strip()
-            if part:
-                yield part
+            stripped_part = part.strip()
+            if stripped_part:
+                yield stripped_part
 
     elif isinstance(string, Iterable):
         # NOTE: Text is also an Iterable, so this should always be after the Text check.
         for part in string:
-            part = str(part).strip()
-            if part:
-                yield part
+            stripped_part = str(part).strip()
+            if stripped_part:
+                yield stripped_part
 
     else:
-        raise TypeError("Cannot split string of {!r}".format(type(string)))
+        raise TypeError(f"Cannot split string of {type(string)!r}")
 
 
 def is_instance_of_all(obj, classes: Iterable[type]) -> bool:

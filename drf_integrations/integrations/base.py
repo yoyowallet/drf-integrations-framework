@@ -1,7 +1,7 @@
-from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type
-
 import copy
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Any, Optional
+
 from django import forms
 from django.core.exceptions import ValidationError
 
@@ -28,7 +28,7 @@ class BaseIntegrationForm(forms.Form):
         return f"_{cls._get_install_attribute_id_name()[:-3]}"
 
     @classmethod
-    def clean_form_data(cls, installation_form: forms.Form) -> Dict:
+    def clean_form_data(cls, installation_form: forms.Form) -> dict:
         """
         Performs form-wide cleaning. `installation_form` will be a form that contains,
         at least, all the fields that the current class does, as long as it has not been
@@ -44,7 +44,7 @@ class BaseIntegrationForm(forms.Form):
         """
         return installation_form.cleaned_data
 
-    def clean(self) -> Dict:
+    def clean(self) -> dict:
         """
         Hook for doing any extra form-wide cleaning after Field.clean() has been
         called on every field.
@@ -108,7 +108,7 @@ class BaseIntegrationForm(forms.Form):
                 self.fields[name].initial = config.get(name, field.initial)
 
 
-class BaseClient(object):
+class BaseClient:
     @classmethod
     def from_context(cls, context: Context, **kwargs) -> "BaseClient":
         initkwargs = copy.deepcopy(context.installation.get_config())
@@ -119,8 +119,8 @@ class BaseClient(object):
 class BaseIntegration:
     name: str
     url: Optional[str]
-    config_form_class: Optional[Type[BaseIntegrationForm]] = None
-    client_class: Optional[Type[BaseClient]] = None
+    config_form_class: Optional[type[BaseIntegrationForm]] = None
+    client_class: Optional[type[BaseClient]] = None
     is_local: bool = False
     is_installable: bool = True
     is_uninstallable: bool = False
@@ -155,13 +155,13 @@ class BaseIntegration:
         return f"integration-{self.name}"
 
     @property
-    def default_scopes(self) -> List[str]:
+    def default_scopes(self) -> list[str]:
         """
-        List of default scopes for the integration, if any.
+        list of default scopes for the integration, if any.
         """
         return []
 
-    def get_urls(self) -> List:
+    def get_urls(self) -> list:
         """
         Return URLs for this integration in the same way as a URLconf.
         The URLs will be nested under the path: `/api/integrations/<name>/`
@@ -178,7 +178,7 @@ class BaseIntegration:
         """
         return []
 
-    def get_config(self, context: Context) -> Optional[Dict[str, Any]]:
+    def get_config(self, context: Context) -> Optional[dict[str, Any]]:
         """
         Get configuration values from the installation in the context.
 
@@ -204,7 +204,7 @@ class BaseIntegration:
         return self.client_class.from_context(context, **kwargs)
 
     @classmethod
-    def get_installation_lookup_from_config_values(cls, **kwargs) -> Dict:
+    def get_installation_lookup_from_config_values(cls, **kwargs) -> dict:
         """
         Return a lookup filter suitable for models that subclass
         `drf_integrations.models.AbstractApplicationInstallation`.
@@ -226,7 +226,7 @@ class BaseIntegration:
         *,
         application: "Optional[models.Application]" = None,
         **kwargs,
-    ) -> Dict:
+    ) -> dict:
         """
         Return a lookup filter suitable for models that subclass
         `drf_integrations.models.AbstractApplicationInstallation`.
@@ -242,9 +242,10 @@ class BaseIntegration:
                     "the application argument is necessary to be able to look it up"
                 )
             # Local integrations only have 1 installation always, so simply retrieve it
-            return dict(
-                application__local_integration_name=cls.name, application=application
-            )
+            return {
+                "application__local_integration_name": cls.name,
+                "application": application,
+            }
 
         # Internal integrations may have different behaviours (links an installation
         # config field to a request header, a cookie...), so each subclass should

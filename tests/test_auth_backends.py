@@ -37,7 +37,7 @@ def test_oauth_backend_no_authorization(get_integration, create_access_token):
     token_str = "token"
     create_access_token(
         target_id=1,
-        application_kwargs=dict(local_integration_name=integration.name),
+        application_kwargs={"local_integration_name": integration.name},
         token=token_str,
     )
     factory = APIRequestFactory()
@@ -55,7 +55,7 @@ def test_oauth_backend_internal_token(get_integration, create_access_token):
     token_str = "token"
     token, __ = create_access_token(
         target_id=1,
-        application_kwargs=dict(local_integration_name=integration.name),
+        application_kwargs={"local_integration_name": integration.name},
         token=token_str,
         scope=REQUIRED_SCOPE,
     )
@@ -76,7 +76,7 @@ def test_oauth_backend_not_installed(get_integration, create_access_token):
     token_str = "token"
     __, installation = create_access_token(
         target_id=1,
-        application_kwargs=dict(local_integration_name=integration.name),
+        application_kwargs={"local_integration_name": integration.name},
         token=token_str,
         scope=REQUIRED_SCOPE,
     )
@@ -97,7 +97,7 @@ def test_oauth_backend_pass(get_integration, create_access_token):
     target_id = 1
     token, installation = create_access_token(
         target_id=target_id,
-        application_kwargs=dict(local_integration_name=integration.name),
+        application_kwargs={"local_integration_name": integration.name},
         token=token_str,
         scope=REQUIRED_SCOPE,
     )
@@ -123,7 +123,7 @@ def test_oauth_backend_cannot_ensure_integration(get_integration, create_access_
     target_id = 1
     create_access_token(
         target_id=target_id,
-        application_kwargs=dict(local_integration_name=integration.name),
+        application_kwargs={"local_integration_name": integration.name},
         token=token_str,
         scope=REQUIRED_SCOPE,
     )

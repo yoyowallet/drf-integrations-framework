@@ -1,10 +1,10 @@
-from typing import TYPE_CHECKING, Dict, List, Optional
-
 import hmac
 import logging
+from hashlib import sha256
+from typing import TYPE_CHECKING, Optional
+
 from django import forms
 from django.contrib.auth.models import AnonymousUser
-from hashlib import sha256
 from oauth2_provider.contrib.rest_framework import TokenHasScope
 from oauth2_provider.models import get_access_token_model, get_application_model
 from rest_framework import routers, status, viewsets
@@ -56,7 +56,7 @@ class ShopifyConfigForm(BaseIntegrationForm):
         )
 
     @classmethod
-    def clean_form_data(cls, installation_form: "forms.Form") -> Dict:
+    def clean_form_data(cls, installation_form: "forms.Form") -> dict:
         data = super().clean_form_data(installation_form)
 
         shopify_shop = data["shopify_shop"]
@@ -69,7 +69,8 @@ class ShopifyConfigForm(BaseIntegrationForm):
             raise forms.ValidationError(
                 {
                     "shopify_shop": {
-                        f"There is already an existing installation with shop {shopify_shop}"
+                        "There is already an existing installation with shop "
+                        f"{shopify_shop}"
                     }
                 }
             )
@@ -83,13 +84,13 @@ class ShopifyIntegration(BaseIntegration):
     config_form_class = ShopifyConfigForm
     default_scopes = ["purchase:shopify:write", "webhook:shopify:write"]
 
-    def get_urls(self) -> List:
+    def get_urls(self) -> list:
         router = routers.DefaultRouter()
         router.register("webhook", ShopifyWebhookViewSet, basename="shopify")
         return router.urls
 
     @classmethod
-    def get_installation_lookup_from_request(cls, request: "Request", **kwargs) -> Dict:
+    def get_installation_lookup_from_request(cls, request: "Request", **kwargs) -> dict:
         return cls.get_installation_lookup_from_config_values(
             shopify_shop=(
                 request.headers.get("X-Shopify-Hmac-Sha256")
@@ -135,7 +136,7 @@ class ShopifyBaseAuthBackend(BaseAuthentication):
         if not signature or not signature_values:
             logger.info(
                 "integrations.shopify.missing_signature_values",
-                extra=dict(signature=signature, signature_values=signature_values),
+                extra={"signature": signature, "signature_values": signature_values},
             )
             return None
 
@@ -149,13 +150,13 @@ class ShopifyBaseAuthBackend(BaseAuthentication):
         ):
             logger.info(
                 "integrations.shopify.invalid_signature",
-                extra=dict(
-                    request=request,
-                    headers=request.headers,
-                    queryparams=request.query_params,
-                    signature=signature,
-                    calculated_signature=new_signature,
-                ),
+                extra={
+                    "request": request,
+                    "headers": request.headers,
+                    "queryparams": request.query_params,
+                    "signature": signature,
+                    "calculated_signature": new_signature,
+                },
             )
             return None
 
@@ -185,7 +186,7 @@ class ShopifyProxyBackend(ShopifyBaseAuthBackend):
             if key != "signature"
         }
         encoded_params = "&".join(
-            (f"{key}={queryparams[key]}" for key in sorted(queryparams.keys()))
+            f"{key}={queryparams[key]}" for key in sorted(queryparams.keys())
         )
         return encoded_params
 
@@ -224,9 +225,10 @@ class ShopifyWebhookViewSet(viewsets.ViewSet):
     def create(self, request):
         logger.info(
             "integrations.shopify.webhook",
-            extra=dict(
-                data=request.data, installation=request.auth_context.installation
-            ),
+            extra={
+                "data": request.data,
+                "installation": request.auth_context.installation,
+            },
         )
 
         return Response(status=status.HTTP_200_OK)

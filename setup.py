@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-import setuptools
 import sys
+
+import setuptools
 
 CURRENT_PYTHON = sys.version_info[:2]
 REQUIRED_PYTHON = (3, 12)
@@ -21,9 +22,7 @@ if __name__ == "__main__":
     have pip >= 9.0 and setuptools >= 24.2, then try again.
     This will install the latest version of DRF Integrations Framework which works on
     your version of Python.
-    """.format(
-                *(REQUIRED_PYTHON + CURRENT_PYTHON)
-            )
+    """.format(*(REQUIRED_PYTHON + CURRENT_PYTHON))
         )
         sys.exit(1)
 

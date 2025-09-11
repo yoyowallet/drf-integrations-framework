@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Dict, Optional, Tuple
+from typing import TYPE_CHECKING, Optional
 
 import django
 import pytest
@@ -89,7 +89,7 @@ def pytest_configure(config):
 @pytest.fixture(autouse=True)
 def reset_registry():
     yield
-    integrations.default_registry.integrations = dict()
+    integrations.default_registry.integrations = {}
     for installed_integration in settings.INSTALLED_INTEGRATIONS:
         integration_class = import_string(installed_integration)
         integrations.register(integration_class)
@@ -105,11 +105,10 @@ def get_integration():
                 integration = LocalWithFormIntegrationTest
             else:
                 integration = LocalIntegrationTest
+        elif has_form:
+            integration = InternalWithFormIntegrationTest
         else:
-            if has_form:
-                integration = InternalWithFormIntegrationTest
-            else:
-                integration = InternalIntegrationTest
+            integration = InternalIntegrationTest
 
         if register:
             integrations.register(integration)
@@ -160,14 +159,14 @@ def create_access_token():
     def creator(
         *,
         target_id: int,
-        installation_config: Optional[Dict] = None,
+        installation_config: Optional[dict] = None,
         application: "Optional[models.Application]" = None,
-        application_kwargs: Optional[Dict] = None,
+        application_kwargs: Optional[dict] = None,
         token: Optional[str] = None,
         scope: Optional[str] = None,
-    ) -> "Tuple[models.AccessToken, models.ApplicationInstallation]":
+    ) -> "tuple[models.AccessToken, models.ApplicationInstallation]":
         if not application:
-            application = factories.ApplicationFactory(**(application_kwargs or dict()))
+            application = factories.ApplicationFactory(**(application_kwargs or {}))
         installation = factories.ApplicationInstallationFactory(
             application_id=application.pk,
             target_id=target_id,

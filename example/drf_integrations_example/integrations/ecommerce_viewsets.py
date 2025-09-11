@@ -26,7 +26,7 @@ class PurchasesViewSet(viewsets.ViewSet):
             )
         except models.IntegrationUser.DoesNotExist:
             return Response(
-                data=dict(error=f"User {user_id} does not exist"),
+                data={"error": f"User {user_id} does not exist"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 

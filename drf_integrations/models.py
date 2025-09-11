@@ -1,6 +1,7 @@
-from typing import TYPE_CHECKING, Dict, List, Optional, Type
-
 import urllib.parse
+from typing import TYPE_CHECKING, Optional
+from uuid import uuid4
+
 from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -14,7 +15,6 @@ from oauth2_provider.models import AbstractGrant as OAuthAbstractGrant
 from oauth2_provider.models import AbstractRefreshToken as OAuthAbstractRefreshToken
 from oauth2_provider.scopes import get_scopes_backend
 from oauth2_provider.settings import oauth2_settings
-from uuid import uuid4
 
 from drf_integrations import managers
 from drf_integrations.types import IntegrationT
@@ -102,7 +102,7 @@ class AbstractApplication(OAuthAbstractApplication):
         """
         return self.is_approved
 
-    def get_allowed_schemes(self) -> List[str]:
+    def get_allowed_schemes(self) -> list[str]:
         """
         Overridden to take schemes from the value of `redirect_uris`.
         """
@@ -113,7 +113,7 @@ class AbstractApplication(OAuthAbstractApplication):
                 schemes.add(parsed_allowed_uri.scheme)
         return list(schemes)
 
-    def valid_scopes_access(self) -> Dict[str, str]:
+    def valid_scopes_access(self) -> dict[str, str]:
         """
         Returns a dictionary of allowed scope names (as keys)
         with their descriptions (as values).
@@ -158,7 +158,7 @@ class AbstractApplication(OAuthAbstractApplication):
         return self.internal_integration_name is not None
 
     def get_integration_instance(
-        self, *ensure_subclasses: Type[IntegrationT]
+        self, *ensure_subclasses: type[IntegrationT]
     ) -> IntegrationT:
         """
         Returns the instance of the integration class of this application.
@@ -195,7 +195,7 @@ class AbstractApplication(OAuthAbstractApplication):
     #
 
     def install(
-        self, target_id: int, *, config: Dict = None
+        self, target_id: int, *, config: dict = None
     ) -> "AbstractApplicationInstallation":
         integration = self.get_integration_instance()
         application_installation = get_application_installation_model()
@@ -275,12 +275,6 @@ class Grant(AbstractGrant):
 
 def _get_application_installation_class():
     class _AbstractApplicationInstallation(models.Model):
-        class Meta:
-            abstract = True
-            unique_together = [
-                ("application", get_application_installation_install_attribute_name())
-            ]
-
         created_at = models.DateTimeField(auto_now_add=True)
         updated_at = models.DateTimeField(auto_now=True)
         deleted_at = models.DateTimeField(null=True, editable=False)
@@ -295,19 +289,23 @@ def _get_application_installation_class():
 
         objects = managers.ApplicationInstallationQuerySet.as_manager()
 
-        def __str__(self):
-            try:
-                return (
-                    f"{self.application.get_integration_instance().name} installation for "
-                    f"{getattr(self, get_application_installation_install_attribute_name())}"
-                )
-            except ValueError:
-                return (
-                    f"Installation for "
-                    f"{getattr(self, get_application_installation_install_attribute_name())}"
-                )
+        class Meta:
+            abstract = True
+            unique_together = [
+                ("application", get_application_installation_install_attribute_name())
+            ]
 
-        def get_config(self) -> Dict:
+        def __str__(self):
+            attr_name = getattr(
+                self, get_application_installation_install_attribute_name()
+            )
+            try:
+                integration_name = self.application.get_integration_instance().name
+                return f"{integration_name} installation for {attr_name}"
+            except ValueError:
+                return f"Installation for {attr_name}"
+
+        def get_config(self) -> dict:
             return self.config or {}
 
         def get_context(self) -> "Context":
@@ -315,7 +313,7 @@ def _get_application_installation_class():
 
             return Context(installation=self)
 
-        def get_external_data_source_lookup(self) -> Dict:
+        def get_external_data_source_lookup(self) -> dict:
             """
             Return a lookup filter suitable for models that subclass
             `drf_integrations.integrations.models.BasePerformedByIntegration`.

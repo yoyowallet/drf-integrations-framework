@@ -1,7 +1,7 @@
-from typing import TYPE_CHECKING, Type, Union
-
 import datetime
 import logging
+from typing import TYPE_CHECKING, Union
+
 from django.db import models
 from django.utils import timezone
 from oauth2_provider.models import ApplicationManager as BaseApplicationManager
@@ -18,16 +18,16 @@ class ApplicationManager(BaseApplicationManager):
     def _update_or_create_internal_integration(self, *, name: str) -> "Application":
         obj, __ = self.update_or_create(
             internal_integration_name=name,
-            defaults=dict(
-                name=f"{name} (Internal)",
-                client_type=self.model.CLIENT_CONFIDENTIAL,
-                is_approved=True,
-            ),
+            defaults={
+                "name": f"{name} (Internal)",
+                "client_type": self.model.CLIENT_CONFIDENTIAL,
+                "is_approved": True,
+            },
         )
         return obj
 
     def get_by_internal_integration(
-        self, name_or_class: "Union[str, Type[BaseIntegration]]"
+        self, name_or_class: "Union[str, type[BaseIntegration]]"
     ) -> "Application":
         from drf_integrations import integrations
 
@@ -90,8 +90,11 @@ class AccessTokenManager(models.Manager):
             .get_or_create(
                 application=application,
                 scope=scope,
-                defaults=dict(
-                    scope=scope, expires=expires, is_internal_only=True, token=token
-                ),
+                defaults={
+                    "scope": scope,
+                    "expires": expires,
+                    "is_internal_only": True,
+                    "token": token,
+                },
             )
         )

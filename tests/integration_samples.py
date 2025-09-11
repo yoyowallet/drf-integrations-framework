@@ -1,5 +1,3 @@
-from typing import Dict
-
 from django import forms
 
 from drf_integrations.integrations.base import BaseIntegration, BaseIntegrationForm
@@ -9,7 +7,7 @@ class FormTest(BaseIntegrationForm):
     extra_field = forms.CharField(max_length=10)
 
     @classmethod
-    def clean_form_data(cls, installation_form: forms.Form) -> Dict:
+    def clean_form_data(cls, installation_form: forms.Form) -> dict:
         data = super().clean_form_data(installation_form)
         if "extra_field" not in data or "forbidden" in data["extra_field"]:
             raise forms.ValidationError({"extra_field": "Value cannot be forbidden"})

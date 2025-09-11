@@ -1,4 +1,5 @@
 import logging
+
 from django import forms
 from django.db.models import signals
 from mixpanel import Mixpanel
@@ -61,9 +62,11 @@ class MixpanelClient(BaseClient):
         self._client.track(
             str(user.pk),
             "new_purchase",
-            dict(
-                amount=amount, currency=currency, source_integration=source_integration
-            ),
+            {
+                "amount": amount,
+                "currency": currency,
+                "source_integration": source_integration,
+            },
         )
 
 

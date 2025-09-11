@@ -6,55 +6,54 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('drf_integrations', '0005_alter_applicationinstallation_id'),
+        ("drf_integrations", "0005_alter_applicationinstallation_id"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='accesstoken',
-            name='user',
+            model_name="accesstoken",
+            name="user",
             field=models.ForeignKey(
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name='%(app_label)s_%(class)s',
+                related_name="%(app_label)s_%(class)s",
                 to=settings.AUTH_USER_MODEL,
             ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='user',
+            model_name="application",
+            name="user",
             field=models.ForeignKey(
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name='%(app_label)s_%(class)s',
+                related_name="%(app_label)s_%(class)s",
                 to=settings.AUTH_USER_MODEL,
             ),
         ),
         migrations.AlterField(
-            model_name='grant',
-            name='redirect_uri',
+            model_name="grant",
+            name="redirect_uri",
             field=models.TextField(),
         ),
         migrations.AlterField(
-            model_name='grant',
-            name='user',
+            model_name="grant",
+            name="user",
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name='%(app_label)s_%(class)s',
+                related_name="%(app_label)s_%(class)s",
                 to=settings.AUTH_USER_MODEL,
             ),
         ),
         migrations.AlterField(
-            model_name='refreshtoken',
-            name='user',
+            model_name="refreshtoken",
+            name="user",
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name='%(app_label)s_%(class)s',
+                related_name="%(app_label)s_%(class)s",
                 to=settings.AUTH_USER_MODEL,
             ),
         ),
