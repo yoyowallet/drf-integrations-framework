@@ -1,8 +1,18 @@
-.PHONY: deps
-deps:
+.PHONY: clean
+clean:
+	find . -name '*.pyc' -delete
+	find . -name '__pycache__' -delete
+	rm -rf dist
+
+.PHONY: deps-clean
+deps-clean:
 	if command -v pyenv >/dev/null 2>&1; then pyenv local 3.12; fi
-	poetry env remove 3.12 || true
+	# Remove the environment and ignore errors if it does not exist.
+	poetry env remove 3.12 2>/dev/null || true
 	poetry env use 3.12
+
+.PHONY: deps
+deps: deps-clean
 	poetry install
 
 # Clears out all of the tables in the database
@@ -10,6 +20,17 @@ deps:
 db-clean:
 	psql -U postgres -d postgres -c "DROP SCHEMA IF EXISTS public CASCADE;"
 	psql -U postgres -d postgres -c "CREATE SCHEMA public;"
+
+# For ubuntu we get the following error for python 3.9
+# `ModuleNotFoundError: No module named 'distutils.cmd'`
+# To fix this we must add deadsnakes to the apt registry and install their python 3.9
+# packages to fix the problem. This can be removed once we move away from python3.9
+.PHONY: install-ubuntu
+install-ubuntu: clean deps-clean
+	sudo add-apt-repository -y ppa:deadsnakes/ppa
+	sudo apt update
+	sudo apt install -y python3.9-venv python3.9-dev
+	poetry install
 
 # Run the following to clean out the database and run the migrations from scratch to
 # prove that they run properly.
@@ -25,9 +46,10 @@ db-setup: db-clean migrate
 dbrun:
 	docker compose up
 
+TOX_ARGS ?=
 .PHONY: tox
 tox:
-	poetry run tox $(pytest_args)
+	poetry run tox $(pytest_args) ${TOX_ARGS}
 
 .PHONY: tests
 tests:
