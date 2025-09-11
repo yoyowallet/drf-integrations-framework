@@ -6,18 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [0.9.0-alpha] - 2025-09-05 - Pre Release
 ### Added
-- Support for Python 3.12
-- Support for Django 4.2
-- This changelog to track future changes.
+- Support for Python 3.9 to 3.13
+- Support for Django 3.2, 4.2, 5.2
+- Changelog to track future changes.
+- Pre-commit checks and run them as part of the Github actions workflow.
+- Pre-commit checks for missing migrations
+- Make file contains command db-setup to test running all migrations on an empty database
 
 ### Changed
-- None
+- Use Ruff as linter
 
 ### Deprecated
 - None
 
 ### Removed
-- Support for Django 2.2 and python 3.7 & 3.8
+- Dropped support for Django 2.2 and python 3.7 & 3.8
 
 ### Fixed
 - None
