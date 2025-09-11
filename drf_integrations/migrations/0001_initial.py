@@ -116,7 +116,9 @@ class Migration(migrations.Migration):
                         blank=True,
                         default=None,
                         editable=False,
-                        help_text="Local integration name, specific to just one client.",
+                        help_text=(
+                            "Local integration name, specific to just one client."
+                        ),
                         null=True,
                     ),
                 ),

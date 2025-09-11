@@ -9,14 +9,14 @@ if TYPE_CHECKING:
 
 
 class BasePerformedByIntegration(models.Model):
-    class Meta:
-        abstract = True
-
     performed_by_installation_id = models.PositiveIntegerField(
         null=True, default=None, db_index=True, editable=False
     )
 
     objects = managers.PerformedByIntegrationQuerySet.as_manager()
+
+    class Meta:
+        abstract = True
 
     def set_performed_by(self, *, installation: "AbstractApplicationInstallation"):
         self.performed_by_installation_id = installation.pk
