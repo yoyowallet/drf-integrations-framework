@@ -1,9 +1,7 @@
-version: '2'
-
 services:
 
   postgres:
-    image: postgres:15
+    image: postgres:17
     container_name: drfintegrations-postgres
     ports:
       - "5432:5432"
@@ -11,9 +9,3 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_PASSWORD=postgres
-    volumes:
-      - pgdata15:/var/lib/postgresql/data
-
-volumes:
-  pgdata15:
-    external: true

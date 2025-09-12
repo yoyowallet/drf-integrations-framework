@@ -30,9 +30,15 @@ class Migration(migrations.Migration):
                 ("scope", models.TextField(blank=True)),
                 ("created", models.DateTimeField(auto_now_add=True)),
                 ("updated", models.DateTimeField(auto_now=True)),
-                ("is_internal_only", models.BooleanField(default=False, editable=False)),
+                (
+                    "is_internal_only",
+                    models.BooleanField(default=False, editable=False),
+                ),
             ],
-            options={"abstract": False, "swappable": "OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL"},
+            options={
+                "abstract": False,
+                "swappable": "OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL",
+            },
         ),
         migrations.CreateModel(
             name="Application",
@@ -49,12 +55,17 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "redirect_uris",
-                    models.TextField(blank=True, help_text="Allowed URIs list, space separated"),
+                    models.TextField(
+                        blank=True, help_text="Allowed URIs list, space separated"
+                    ),
                 ),
                 (
                     "client_type",
                     models.CharField(
-                        choices=[("confidential", "Confidential"), ("public", "Public")],
+                        choices=[
+                            ("confidential", "Confidential"),
+                            ("public", "Public"),
+                        ],
                         max_length=32,
                     ),
                 ),
@@ -105,7 +116,9 @@ class Migration(migrations.Migration):
                         blank=True,
                         default=None,
                         editable=False,
-                        help_text="Local integration name, specific to just one client.",
+                        help_text=(
+                            "Local integration name, specific to just one client."
+                        ),
                         null=True,
                     ),
                 ),
@@ -120,7 +133,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False, "swappable": "OAUTH2_PROVIDER_APPLICATION_MODEL"},
+            options={
+                "abstract": False,
+                "swappable": "OAUTH2_PROVIDER_APPLICATION_MODEL",
+            },
         ),
         migrations.CreateModel(
             name="RefreshToken",
@@ -228,7 +244,10 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.AutoField(
-                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
                     ),
                 ),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
@@ -252,7 +271,10 @@ class Migration(migrations.Migration):
                 "abstract": False,
                 "swappable": "INTEGRATIONS_APPLICATION_INSTALLATION_MODEL",
                 "unique_together": {
-                    ("application", get_application_installation_install_attribute_name())
+                    (
+                        "application",
+                        get_application_installation_install_attribute_name(),
+                    )
                 },
             },
         ),

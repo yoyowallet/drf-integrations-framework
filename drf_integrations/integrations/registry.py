@@ -1,6 +1,7 @@
-from typing import Dict, Iterable, List, Optional, Set, Type, Union
-
 import inspect
+from collections.abc import Iterable
+from typing import Optional, Union
+
 from django.urls import include, path
 
 from drf_integrations.exceptions import ImproperlyConfigured
@@ -13,9 +14,11 @@ class Registry:
         pass
 
     def __init__(self):
-        self.integrations: Dict[str, BaseIntegration] = {}
+        self.integrations: dict[str, BaseIntegration] = {}
 
-    def register(self, integration_cls: Type[BaseIntegration], **kwargs) -> BaseIntegration:
+    def register(
+        self, integration_cls: type[BaseIntegration], **kwargs
+    ) -> BaseIntegration:
         """Register an integration."""
         if integration_cls.name in self.integrations:
             raise ImproperlyConfigured(
@@ -26,7 +29,7 @@ class Registry:
 
     def get_all(
         self, *implements: Iterable[type], is_local: Optional[bool] = None
-    ) -> Set[BaseIntegration]:
+    ) -> set[BaseIntegration]:
         """
         Get all integrations. If ``implements`` is provided, only return integrations
         that are instances of **all** of the classes in ``implements``.
@@ -35,19 +38,21 @@ class Registry:
         """
         if is_local is not None:
             integrations = {
-                value for value in self.integrations.values() if value.is_local is is_local
+                value
+                for value in self.integrations.values()
+                if value.is_local is is_local
             }
         else:
             integrations = set(self.integrations.values())
 
         # Filter by implements
-        return set(
+        return {
             integration
             for integration in integrations
             if is_instance_of_all(integration, implements)
-        )
+        }
 
-    def get(self, name_or_class: Union[str, Type[BaseIntegration]]) -> BaseIntegration:
+    def get(self, name_or_class: Union[str, type[BaseIntegration]]) -> BaseIntegration:
         """
         Get integration by name or class.
         Raises Registry.IntegrationUnavailableException
@@ -55,7 +60,9 @@ class Registry:
         try:
             if isinstance(name_or_class, str):
                 integration = self.integrations[name_or_class]
-            elif inspect.isclass(name_or_class) and issubclass(name_or_class, BaseIntegration):
+            elif inspect.isclass(name_or_class) and issubclass(
+                name_or_class, BaseIntegration
+            ):
                 integration = self.integrations[name_or_class.name]
             else:
                 raise ValueError("invalid name or base integration class")
@@ -64,7 +71,7 @@ class Registry:
 
         return integration
 
-    def get_urls(self, basepath="api/integrations/") -> List:
+    def get_urls(self, basepath="api/integrations/") -> list:
         """Get URLConf for all registered integrations."""
         urls = []
         for name, integration_cls in self.integrations.items():
