@@ -9,7 +9,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("drf_integrations", "0006_alter_accesstoken_user_alter_application_user_and_more"),
+        (
+            "drf_integrations",
+            "0006_alter_accesstoken_user_alter_application_user_and_more",
+        ),
         ("oauth2_provider", "0010_application_allowed_origins"),
         migrations.swappable_dependency(settings.OAUTH2_PROVIDER_ID_TOKEN_MODEL),
     ]

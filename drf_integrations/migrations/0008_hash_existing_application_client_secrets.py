@@ -4,6 +4,9 @@ from django.db import migrations
 
 def hash_existing_client_secrets(apps, schema_editor):
     Application = apps.get_model("drf_integrations", "Application")
+    if Application._meta.swapped:
+        return
+
     database_alias = schema_editor.connection.alias
 
     applications = Application._default_manager.using(database_alias).only(
