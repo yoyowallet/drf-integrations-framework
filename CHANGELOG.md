@@ -26,6 +26,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 - Authorization-code clients now inherit DOT 2.4's
   [`PKCE_REQUIRED=True` default][dot-pkce].
 
+### Removed
+
+- Dropped support for Python 3.9, which reached end of life in October 2025.
+- Dropped support for Django 3.2, which reached end of extended support in April
+  2024. The minimum supported Django version is now 4.2.
+
 ### Security
 
 - Existing plaintext OAuth application secrets are one-way hashed during migration.

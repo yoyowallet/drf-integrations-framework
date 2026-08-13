@@ -20,11 +20,9 @@ classifiers = [
     'Intended Audience :: Developers',
     'Topic :: Software Development :: Libraries',
     'Framework :: Django',
-    'Framework :: Django :: 3.2',
     'Framework :: Django :: 4.2',
     'Framework :: Django :: 5.2',
     'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
@@ -38,7 +36,8 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.14"
+python = ">=3.10,<3.14"
+django = ">=4.2,<6"
 djangorestframework = ">=3.11.0,<4"
 django-oauth-toolkit = ">=2.4,<2.5"
 django-environ = ">=0.9.0"
