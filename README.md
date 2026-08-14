@@ -14,7 +14,7 @@ between the source/destiny of events, how these requests are authenticated and t
 - Python >=3.10, <3.14
 - Django >=4.2, <6
 - Django REST Framework >=3.1.1
-- Django OAuth Toolkit >=2.4, <2.5
+- Django OAuth Toolkit >=2.4, <3.0
 
 ## Installation
 

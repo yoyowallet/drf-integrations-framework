@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Changed
 
-- Raised the supported Django OAuth Toolkit range from 1.3–1.4 to `>=2.4,<2.5`;
+- Raised the supported Django OAuth Toolkit range from 1.3–1.4 to `>=2.4,<3`;
   consumers should review the [DOT 2.4 release notes][dot-changelog].
 - Declared fresh-install migration ordering so DOT's concrete `IDToken` is created
   only after the configured application model is available in migration state.
