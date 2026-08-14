@@ -22,4 +22,5 @@ from drf_integrations import integrations
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("example.drf_integrations_example.api.urls")),
+    path("oauth/", include("oauth2_provider.urls")),
 ] + integrations.get_urls()

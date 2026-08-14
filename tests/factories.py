@@ -7,8 +7,14 @@ from drf_integrations import models
 
 
 class ApplicationFactory(factory.django.DjangoModelFactory):
+    """Build persisted OAuth applications with valid reusable defaults."""
+
     class Meta:
         model = models.Application
+
+    client_id = factory.Sequence(lambda sequence: f"client-{sequence}")
+    client_type = models.Application.CLIENT_CONFIDENTIAL
+    authorization_grant_type = models.Application.GRANT_CLIENT_CREDENTIALS
 
 
 class ApplicationInstallationFactory(factory.django.DjangoModelFactory):

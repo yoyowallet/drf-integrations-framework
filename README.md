@@ -10,30 +10,36 @@ Framework will probably simplify that for you. DRF Integrations Framework will h
 between the source/destiny of events, how these requests are authenticated and the business logic associated to them.
 
 ## Requirements
-- Python >=3.12+
-- Django >=3.2+
+
+- Python >=3.10, <3.14
+- Django >=4.2, <6
 - Django REST Framework >=3.1.1
-- Django OAuth Toolkit >=1.3.2, <2
+- Django OAuth Toolkit >=2.4, <3.0
 
 ## Installation
 
 The following library is required in order to build on `Linux systems`. It fixes the
 problem where `Error: pg_config executable not found.` is given when installing psycopg2
 via `poetry install`
+
 ```
 sudo apt install libpq-dev
 ```
 
 Install from PyPi:
+
 ```bash
 pip install drf-integrations-framework
 ```
+
 Or install from source:
+
 ```bash
 pip install https://github.com/yoyowallet/drf-integrations-framework/archive/v0.7.1.tar.gz
 ```
 
 Add the apps to your `INSTALLED_APPS`:
+
 ```python
 INSTALLED_APPS = [
     ...,
@@ -44,6 +50,7 @@ INSTALLED_APPS = [
 ```
 
 If you are going to configure any inbound integration, you will want to add the integration URLs to your `urls.py`:
+
 ```python
 from drf_integrations import integrations
 
@@ -53,44 +60,82 @@ urlpatterns = [
 ```
 
 ## Configuration
+
 ### Settings
+
 DRF Integrations Framework relies on Django OAuth Toolkit to manage third party applications. In order to be able to use
 it, first you'll need to configure DOT by setting (at least) the model references in your settings.
+
 ```python
 OAUTH2_PROVIDER_APPLICATION_MODEL = "drf_integrations.Application"
 OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = "drf_integrations.AccessToken"
 OAUTH2_PROVIDER_GRANT_MODEL = "drf_integrations.Grant"
 OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = "drf_integrations.RefreshToken"
+OAUTH2_PROVIDER_ID_TOKEN_MODEL = "oauth2_provider.IDToken"
 ```
+
 Then, similarly, you will have to configure the model for the integrations.
+
 ```python
 INTEGRATIONS_APPLICATION_INSTALLATION_MODEL = "drf_integrations.ApplicationInstallation"
 ```
+
 You will also have to configure how the integrations are stored in the database. On the one hand, you will have to set
 the type of JSON field your DB uses. On the other hand, you will have to set the name of the attribute where you want to
 relate the integrations.
+
 ```python
 DB_BACKEND_JSON_FIELD = "django.db.models.JSONField"
 INTEGRATIONS_APPLICATION_INSTALLATION_INSTALL_ATTRIBUTE = "target_id"
 ```
+
 Finally, you have to set the list of integrations that are available in your system (see the following section to learn
 about creating integrations).
+
 ```python
 INSTALLED_INTEGRATIONS = [
     "example.drf_integrations_example.api.integrations.APIClientIntegration",
 ]
 ```
+
+### OAuth client secrets and PKCE
+
+[Django OAuth Toolkit 2.4 hashes OAuth application client secrets by default][dot-secret].
+Capture the original plaintext secret when an application is created and deliver it
+through a secure channel. The value later read from `Application.client_secret` is a
+password hash: it cannot be recovered and must never be submitted to the token endpoint
+as the client credential. DOT authenticates the original plaintext credential against
+that stored hash.
+
+DOT 2.4 also defaults [`OAUTH2_PROVIDER["PKCE_REQUIRED"]` to `True`][dot-pkce]. PKCE
+applies to the authorization-code flow. It does not apply to client-credentials,
+password, refresh-token, or bearer-token validation flows. Existing authorization-code
+clients must add a PKCE challenge and verifier, or the owning project must deliberately
+define a temporary boolean or per-client callable override while those clients are
+migrated. See DOT's [authorization-code and client-credentials examples][dot-started]
+for request-level guidance.
+
+See [the DOT 2.4 upgrade guide](docs/oauth-toolkit-2.4-upgrade.md) before deploying to
+an existing database, especially if the project owns concrete swapped OAuth models.
+
+[dot-pkce]: https://django-oauth-toolkit.readthedocs.io/en/2.4.0/settings.html#pkce-required
+[dot-secret]: https://django-oauth-toolkit.readthedocs.io/en/2.4.0/models.html#oauth2_provider.models.ClientSecretField
+[dot-started]: https://django-oauth-toolkit.readthedocs.io/en/2.4.0/getting_started.html#oauth2-authorization-grants
+
 ### Creating integrations
+
 An integration is represented by an extension of `BaseIntegration`. Then, the integration will be available to be
 installed to different clients (as related with the previously configured
 `INTEGRATIONS_APPLICATION_INSTALLATION_INSTALL_ATTRIBUTE`) once it is stored into an `Application`. This can be done in
 two different ways:
+
 1. Internal integrations (or non-local integrations) are those that can be configured once and installed to different clients with different
 parameters. For example, your system may connect to Mixpanel, the connections and interactions with the service are all
 the same, only the secret in the connection changes.
 
    These will only have 1 `Application` object in the database, and it can be related to multiple installations. They
    can also be automatically created by using the `syncregistry` management command.
+
    ```bash
    python manage.py syncregistry
    ```
@@ -100,6 +145,7 @@ the same, only the secret in the connection changes.
 are usually created on demand as required by clients.
 
 An integration broadly has 3 functions:
+
 1. Generates a list of URLs that a third party represented by this integration can connect to.
 Mainly used for inward integrations.
 1. Returns a client that can connect to the third party it represents. Mainly used for outward integrations.
@@ -111,6 +157,7 @@ permissions, event hooks... Take a look at [the example](example) to see some ba
 of DRF Integrations Framework.
 
 ### Preconfigured
+
 There are some features that DRF Integrations Framework provides out of the box.
 
 - Admin model for `ApplicationInstallation` that already handles integration-specific configuration via dynamic forms.
@@ -124,7 +171,7 @@ To run the tests you need to have a postgresql server running on localhost and h
 postgres user/role defined. To create the postgres user and role you can use the
 following:
 
-```psql -c 'CREATE ROLE postgres WITH LOGIN SUPERUSER' ```
+```psql -c 'CREATE ROLE postgres WITH LOGIN SUPERUSER'```
 
 To run the tests execute the following
 
@@ -134,13 +181,16 @@ If running tests under pycharm ensure that `python tests` -> `pytest` is used an
 the `Additional Arguments` to `--no-migrations`
 
 Failing to specify `--no-migrations` will result in the following error:
+
 ```
 ValueError: Related model 'oauth2_provider.idtoken' cannot be resolved
 ```
 
 ## Changelog
+
 See [Releases](https://github.com/yoyowallet/drf-integrations-framework/releases)
 
 ## Authors
+
 DRF Integrations Framework is an original idea by [@jianyuan](https://github.com/jianyuan), developed and maintained by
 the platform team at [@yoyowallet](https://github.com/yoyowallet).
