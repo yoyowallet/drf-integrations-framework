@@ -15,6 +15,11 @@ JSONField = get_json_model_field()
 class Migration(migrations.Migration):
     initial = True
 
+    # DOT 2.x creates its concrete IDToken in 0004 with a foreign key to the
+    # configured (swapped) Application model. Ensure that model exists in migration
+    # state first when building a database from scratch.
+    run_before = [("oauth2_provider", "0004_auto_20200902_2022")]
+
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ("oauth2_provider", "0001_initial"),

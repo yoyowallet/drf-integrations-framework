@@ -16,7 +16,9 @@ runs:
   - name: Install Poetry
     uses: snok/install-poetry@v1
     with:
-      version: latest
+      # Pin the CI toolchain so a future Poetry release cannot change its Python
+      # requirement and unexpectedly break otherwise supported matrix jobs.
+      version: 2.4.1
       virtualenvs-create: true
       virtualenvs-in-project: true
 
@@ -25,7 +27,7 @@ runs:
     uses: actions/cache@v3
     with:
       path: .venv
-      key: venv-${{ runner.os }}-${{ inputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      key: venv-${{ runner.os }}-${{ inputs.python-version }}-poetry-2.4.1-${{ hashFiles('**/poetry.lock') }}
 
   - name: Install dependencies
     if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'

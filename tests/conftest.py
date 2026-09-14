@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Optional
 import django
 import pytest
 from django.conf import settings
+from django.contrib.auth.hashers import make_password
 from django.utils.module_loading import import_string
 from pytest_django.lazy_django import skip_if_no_django
 
@@ -150,6 +151,31 @@ def drf_client():
     from rest_framework.test import APIClient
 
     return APIClient()
+
+
+@pytest.fixture
+def plaintext_client_secret() -> str:
+    """Return a stable plaintext credential used to verify secret hashing."""
+    return "original-plaintext-secret"
+
+
+@pytest.fixture
+def recognised_client_secret_hash(plaintext_client_secret: str) -> str:
+    """Create an identifiable Django hash for the shared plaintext credential."""
+    return make_password(plaintext_client_secret)
+
+
+@pytest.fixture
+def confidential_oauth_application(plaintext_client_secret: str):
+    """Create an approved client whose persisted credential is securely hashed."""
+    from tests import factories
+
+    return factories.ApplicationFactory(
+        client_secret=plaintext_client_secret,
+        client_type="confidential",
+        authorization_grant_type="client-credentials",
+        is_approved=True,
+    )
 
 
 @pytest.fixture(scope="session")
