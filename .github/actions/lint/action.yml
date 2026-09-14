@@ -23,3 +23,8 @@ runs:
       poetry install
   - name: Run pre-commit
     uses: pre-commit/action@v3.0.1
+    env:
+      # no-commit-to-branch guards against committing to master locally.
+      # CI checks out master by design, so the hook always fails there and
+      # masks genuine lint failures behind a red run.
+      SKIP: no-commit-to-branch
