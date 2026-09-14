@@ -30,10 +30,14 @@ classifiers = [
 ]
 include = [
     "LICENSE",
+    "CHANGELOG.md",
 ]
 packages = [
     { include="drf_integrations" },
 ]
+
+[tool.poetry.urls]
+Changelog = "https://github.com/yoyowallet/drf-integrations-framework/blob/master/CHANGELOG.md"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
