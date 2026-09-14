@@ -1,5 +1,6 @@
 import csv
 import io
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -13,7 +14,7 @@ class CommaSeparatedValueField(models.TextField):
     description = "Comma-separated values"
 
     def __init__(self, deduplicate=True, **kwargs):
-        super(CommaSeparatedValueField, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.deduplicate = deduplicate
 
     def from_db_value(self, value, expression, connection):
@@ -24,7 +25,7 @@ class CommaSeparatedValueField(models.TextField):
     def to_python(self, value):
         if not value:
             return []
-        if type(value) in (list, tuple):
+        if isinstance(value, (list, tuple)):
             return value
         if isinstance(value, str):
             value = split_string(value)
@@ -48,7 +49,7 @@ class CommaSeparatedValueField(models.TextField):
 
         if value is None:
             return ""
-        if type(value) in (list, tuple):
+        if isinstance(value, (list, tuple)):
             return _encode(value)
         if isinstance(value, str):
             try:
@@ -100,20 +101,20 @@ class CommaSeparatedValueField(models.TextField):
             raise ValidationError(self.error_messages["blank"], code="blank")
 
     def formfield(self, **kwargs):
-        kwargs = kwargs or dict()
+        kwargs = kwargs or {}
         if self.choices:
             kwargs["choices_form_class"] = forms.TypedMultipleChoiceField
             kwargs["widget"] = forms.SelectMultiple
             kwargs["coerce"] = lambda value: value
-        return super(CommaSeparatedValueField, self).formfield(**kwargs)
+        return super().formfield(**kwargs)
 
     def get_choices(self, *args, **kwargs):
         if args:
             args = (False,) + args[1:]
-        kwargs = kwargs or dict()
+        kwargs = kwargs or {}
         # Avoid displaying the empty element, not selecting choices should do it
         kwargs["include_blank"] = False
-        return super(CommaSeparatedValueField, self).get_choices(*args, **kwargs)
+        return super().get_choices(*args, **kwargs)
 
     def contribute_to_class(self, cls, name, private_only=False):
         super().contribute_to_class(cls, name, private_only=private_only)
@@ -133,4 +134,4 @@ class CommaSeparatedValueField(models.TextField):
                     for value in values
                 )
 
-            setattr(self.model, "get_%s_display" % self.name, _get_field_display)
+            setattr(self.model, f"get_{self.name}_display", _get_field_display)

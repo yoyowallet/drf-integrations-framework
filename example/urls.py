@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import include, path
 
@@ -21,4 +22,5 @@ from drf_integrations import integrations
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("example.drf_integrations_example.api.urls")),
+    path("oauth/", include("oauth2_provider.urls")),
 ] + integrations.get_urls()

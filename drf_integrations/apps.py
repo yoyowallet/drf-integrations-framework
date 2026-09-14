@@ -1,4 +1,5 @@
 import itertools
+
 from django.apps import AppConfig, apps
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -33,7 +34,9 @@ class DRFIntegrationsConfig(AppConfig):
         ):
             value = getattr(settings, name, None)
             if value is None:
-                raise ImproperlyConfigured(f"{name} setting is required to run drf_integrations")
+                raise ImproperlyConfigured(
+                    f"{name} setting is required to run drf_integrations"
+                )
             elif name in DEFAULT_MODEL_SETTINGS:
                 settings_model = apps.get_model(value)
                 default_model = getattr(models, default_value)

@@ -4,7 +4,7 @@ from django.urls.resolvers import RegexPattern
 
 from drf_integrations.integrations import Registry
 from drf_integrations.integrations.base import BaseIntegration
-from tests.integration_samples import TestInternalIntegration, TestLocalIntegration
+from tests.integration_samples import InternalIntegrationTest, LocalIntegrationTest
 
 
 def test_register(get_integration):
@@ -60,9 +60,9 @@ def test_get_all_with_implements(get_integration):
     registry.register(integration1)
     integration2 = get_integration(is_local=False, register=False)
     registry.register(integration2)
-    assert registry.get_all(TestLocalIntegration) == {integration1()}
-    assert registry.get_all(TestInternalIntegration) == {integration2()}
-    assert registry.get_all(TestInternalIntegration, TestLocalIntegration) == set()
+    assert registry.get_all(LocalIntegrationTest) == {integration1()}
+    assert registry.get_all(InternalIntegrationTest) == {integration2()}
+    assert registry.get_all(InternalIntegrationTest, LocalIntegrationTest) == set()
     with pytest.raises(TypeError):
         registry.get_all(integration2())
 

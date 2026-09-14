@@ -8,7 +8,6 @@ JSONField = get_json_model_field()
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("drf_integrations", "0002_auto_20200623_1421"),
     ]

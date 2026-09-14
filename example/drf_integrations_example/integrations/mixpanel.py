@@ -1,10 +1,15 @@
 import logging
+
 from django import forms
 from django.db.models import signals
 from mixpanel import Mixpanel
 from oauth2_provider.models import get_access_token_model, get_application_model
 
-from drf_integrations.integrations.base import BaseClient, BaseIntegration, BaseIntegrationForm
+from drf_integrations.integrations.base import (
+    BaseClient,
+    BaseIntegration,
+    BaseIntegrationForm,
+)
 from drf_integrations.models import get_application_installation_model
 
 from ..models import IntegrationUser, User, UserPurchase
@@ -34,7 +39,9 @@ class MixpanelConfigForm(BaseIntegrationForm):
                     f"integration {application.internal_integration_name}"
                 )
         else:
-            application = Application.objects.get_by_internal_integration(MixpanelIntegration)
+            application = Application.objects.get_by_internal_integration(
+                MixpanelIntegration
+            )
 
         super().set_initial_values(
             target=target,
@@ -49,11 +56,17 @@ class MixpanelClient(BaseClient):
         super().__init__(**kwargs)
         self._client = Mixpanel(token=token)
 
-    def register_purchase(self, user: User, amount: int, currency: str, source_integration: str):
+    def register_purchase(
+        self, user: User, amount: int, currency: str, source_integration: str
+    ):
         self._client.track(
             str(user.pk),
             "new_purchase",
-            dict(amount=amount, currency=currency, source_integration=source_integration),
+            {
+                "amount": amount,
+                "currency": currency,
+                "source_integration": source_integration,
+            },
         )
 
 

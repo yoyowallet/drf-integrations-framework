@@ -29,7 +29,9 @@ class IntegrationUser(models.Model):
 
 class UserPurchase(BasePerformedByIntegration, models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    integration_user = models.ForeignKey(IntegrationUser, on_delete=models.PROTECT, editable=False)
+    integration_user = models.ForeignKey(
+        IntegrationUser, on_delete=models.PROTECT, editable=False
+    )
     amount = models.IntegerField(editable=False)
     currency = models.CharField(max_length=3, editable=False)
 

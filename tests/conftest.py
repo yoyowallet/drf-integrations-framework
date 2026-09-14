@@ -1,18 +1,19 @@
-from typing import TYPE_CHECKING, Dict, Optional, Tuple
+from typing import TYPE_CHECKING
 
 import django
 import pytest
 from django.conf import settings
+from django.contrib.auth.hashers import make_password
 from django.utils.module_loading import import_string
 from pytest_django.lazy_django import skip_if_no_django
 
 from drf_integrations import integrations
 from drf_integrations.integrations.base import BaseIntegration
 from tests.integration_samples import (
-    TestInternalIntegration,
-    TestInternalWithFormIntegration,
-    TestLocalIntegration,
-    TestLocalWithFormIntegration,
+    InternalIntegrationTest,
+    InternalWithFormIntegrationTest,
+    LocalIntegrationTest,
+    LocalWithFormIntegrationTest,
 )
 
 if TYPE_CHECKING:
@@ -44,7 +45,6 @@ def pytest_configure(config):
         SITE_ID=1,
         SECRET_KEY="testing key",
         USE_I18N=True,
-        USE_L10N=True,
         STATIC_URL="/static/",
         ROOT_URLCONF="tests.urls",
         TEMPLATES=[
@@ -90,7 +90,7 @@ def pytest_configure(config):
 @pytest.fixture(autouse=True)
 def reset_registry():
     yield
-    integrations.default_registry.integrations = dict()
+    integrations.default_registry.integrations = {}
     for installed_integration in settings.INSTALLED_INTEGRATIONS:
         integration_class = import_string(installed_integration)
         integrations.register(integration_class)
@@ -98,17 +98,18 @@ def reset_registry():
 
 @pytest.fixture(scope="session")
 def get_integration():
-    def getter(*, is_local: bool = False, has_form: bool = False, register: bool = True):
+    def getter(
+        *, is_local: bool = False, has_form: bool = False, register: bool = True
+    ):
         if is_local:
             if has_form:
-                integration = TestLocalWithFormIntegration
+                integration = LocalWithFormIntegrationTest
             else:
-                integration = TestLocalIntegration
+                integration = LocalIntegrationTest
+        elif has_form:
+            integration = InternalWithFormIntegrationTest
         else:
-            if has_form:
-                integration = TestInternalWithFormIntegration
-            else:
-                integration = TestInternalIntegration
+            integration = InternalIntegrationTest
 
         if register:
             integrations.register(integration)
@@ -120,14 +121,18 @@ def get_integration():
 
 @pytest.fixture(scope="session")
 def get_application():
-    def getter(*, integration: Optional[BaseIntegration] = None):
+    def getter(*, integration: BaseIntegration | None = None):
         from tests import factories
 
         if integration:
             if integration.is_local:
-                app = factories.ApplicationFactory(local_integration_name=integration.name)
+                app = factories.ApplicationFactory(
+                    local_integration_name=integration.name
+                )
             else:
-                app = factories.ApplicationFactory(internal_integration_name=integration.name)
+                app = factories.ApplicationFactory(
+                    internal_integration_name=integration.name
+                )
         else:
             app = factories.ApplicationFactory()
         return app
@@ -148,6 +153,31 @@ def drf_client():
     return APIClient()
 
 
+@pytest.fixture
+def plaintext_client_secret() -> str:
+    """Return a stable plaintext credential used to verify secret hashing."""
+    return "original-plaintext-secret"
+
+
+@pytest.fixture
+def recognised_client_secret_hash(plaintext_client_secret: str) -> str:
+    """Create an identifiable Django hash for the shared plaintext credential."""
+    return make_password(plaintext_client_secret)
+
+
+@pytest.fixture
+def confidential_oauth_application(plaintext_client_secret: str):
+    """Create an approved client whose persisted credential is securely hashed."""
+    from tests import factories
+
+    return factories.ApplicationFactory(
+        client_secret=plaintext_client_secret,
+        client_type="confidential",
+        authorization_grant_type="client-credentials",
+        is_approved=True,
+    )
+
+
 @pytest.fixture(scope="session")
 def create_access_token():
     from tests import factories
@@ -155,14 +185,14 @@ def create_access_token():
     def creator(
         *,
         target_id: int,
-        installation_config: Optional[Dict] = None,
-        application: "Optional[models.Application]" = None,
-        application_kwargs: Optional[Dict] = None,
-        token: Optional[str] = None,
-        scope: Optional[str] = None,
-    ) -> "Tuple[models.AccessToken, models.ApplicationInstallation]":
+        installation_config: dict | None = None,
+        application: "models.Application | None" = None,
+        application_kwargs: dict | None = None,
+        token: str | None = None,
+        scope: str | None = None,
+    ) -> "tuple[models.AccessToken, models.ApplicationInstallation]":
         if not application:
-            application = factories.ApplicationFactory(**(application_kwargs or dict()))
+            application = factories.ApplicationFactory(**(application_kwargs or {}))
         installation = factories.ApplicationInstallationFactory(
             application_id=application.pk,
             target_id=target_id,
