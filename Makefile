@@ -83,7 +83,7 @@ bump-patch:
 
 .PHONY: install-poetry
 install-poetry:
-	curl -sSL https://install.python-poetry.org | python3 -
+	curl -sSL https://install.python-poetry.org | python3 - --version 2.4.1
 
 .PHONY: uninstall-poetry
 uninstall-poetry:

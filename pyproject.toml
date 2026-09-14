@@ -5,7 +5,7 @@
 
 [tool.poetry]
 name = "drf-integrations-framework"
-version = "0.9.0a1"
+version = "1.0.0"
 description = "Django REST Framework plugin that simplifies the management of third party integrations"
 authors = ["Yoyo <dev@yoyowallet.com>"]
 license = "MIT"
@@ -14,7 +14,7 @@ homepage = "https://github.com/yoyowallet/drf-integrations-framework"
 repository = "https://github.com/yoyowallet/drf-integrations-framework"
 keywords = ["drf"]
 classifiers = [
-    'Development Status :: 3 - Alpha',
+    'Development Status :: 5 - Production/Stable',
     'License :: OSI Approved :: MIT License',
     'Operating System :: OS Independent',
     'Intended Audience :: Developers',
@@ -56,7 +56,7 @@ pytest = "*"
 pytest-django = "*"
 pytest-mock = "*"
 tox = "*"
-twine = "^5.1.1"
+twine = "^7.0.0"
 pytest-coverage = "^0.0"
 bumpversion = "^0.6.0"
 pillow = "^11.3.0"
