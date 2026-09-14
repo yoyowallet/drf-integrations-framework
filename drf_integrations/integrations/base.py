@@ -1,6 +1,6 @@
 import copy
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from django import forms
 from django.core.exceptions import ValidationError
@@ -74,7 +74,7 @@ class BaseIntegrationForm(forms.Form):
         *,
         target,
         integration: "BaseIntegration",
-        application: "Optional[models.Application]" = None,
+        application: "models.Application | None" = None,
         **kwargs,
     ):
         """
@@ -118,9 +118,9 @@ class BaseClient:
 
 class BaseIntegration:
     name: str
-    url: Optional[str]
-    config_form_class: Optional[type[BaseIntegrationForm]] = None
-    client_class: Optional[type[BaseClient]] = None
+    url: str | None
+    config_form_class: type[BaseIntegrationForm] | None = None
+    client_class: type[BaseClient] | None = None
     is_local: bool = False
     is_installable: bool = True
     is_uninstallable: bool = False
@@ -178,7 +178,7 @@ class BaseIntegration:
         """
         return []
 
-    def get_config(self, context: Context) -> Optional[dict[str, Any]]:
+    def get_config(self, context: Context) -> dict[str, Any] | None:
         """
         Get configuration values from the installation in the context.
 
@@ -224,7 +224,7 @@ class BaseIntegration:
         cls,
         request: "Request",
         *,
-        application: "Optional[models.Application]" = None,
+        application: "models.Application | None" = None,
         **kwargs,
     ) -> dict:
         """

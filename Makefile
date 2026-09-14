@@ -21,17 +21,6 @@ db-clean:
 	psql -U postgres -d postgres -c "DROP SCHEMA IF EXISTS public CASCADE;"
 	psql -U postgres -d postgres -c "CREATE SCHEMA public;"
 
-# For ubuntu we get the following error for python 3.9
-# `ModuleNotFoundError: No module named 'distutils.cmd'`
-# To fix this we must add deadsnakes to the apt registry and install their python 3.9
-# packages to fix the problem. This can be removed once we move away from python3.9
-.PHONY: install-ubuntu
-install-ubuntu: clean deps-clean
-	sudo add-apt-repository -y ppa:deadsnakes/ppa
-	sudo apt update
-	sudo apt install -y python3.9-venv python3.9-dev
-	poetry install
-
 # Run the following to clean out the database and run the migrations from scratch to
 # prove that they run properly.
 .PHONY: migrate

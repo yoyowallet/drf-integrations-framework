@@ -1,7 +1,7 @@
 import hmac
 import logging
 from hashlib import sha256
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from django import forms
 from django.contrib.auth.models import AnonymousUser
@@ -103,10 +103,10 @@ class ShopifyBaseAuthBackend(BaseAuthentication):
     def _validate_required(self, request) -> bool:
         raise NotImplementedError()
 
-    def _get_signature(self, request) -> Optional[bool]:
+    def _get_signature(self, request) -> bool | None:
         raise NotImplementedError()
 
-    def _get_signature_values(self, request) -> Optional[bool]:
+    def _get_signature_values(self, request) -> bool | None:
         raise NotImplementedError()
 
     def authenticate(self, request):

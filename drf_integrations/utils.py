@@ -1,17 +1,17 @@
 import logging
 from collections.abc import Iterable, Iterator
-from typing import Any, Optional, Union
+from typing import Any
 
 import django
 from django.utils.module_loading import import_string
 from environ import Env
 
-AnyString = Union[str, Iterable[Any]]
+AnyString = str | Iterable[Any]
 
 env = Env()
 
 
-def split_string(string: Optional[AnyString], separator: str = ",") -> list[str]:
+def split_string(string: AnyString | None, separator: str = ",") -> list[str]:
     """
     Breaks given *string* by the specified *separator*.
 
@@ -29,9 +29,7 @@ def split_string(string: Optional[AnyString], separator: str = ",") -> list[str]
     return list(iter_split_string(string=string, separator=separator))
 
 
-def iter_split_string(
-    string: Optional[AnyString], separator: str = ","
-) -> Iterator[str]:
+def iter_split_string(string: AnyString | None, separator: str = ",") -> Iterator[str]:
     """Generator version of :func:`split_string`."""
 
     if string is None:

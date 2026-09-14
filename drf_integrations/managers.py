@@ -1,6 +1,6 @@
 import datetime
 import logging
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 from django.db import models
 from django.utils import timezone
@@ -27,7 +27,7 @@ class ApplicationManager(BaseApplicationManager):
         return obj
 
     def get_by_internal_integration(
-        self, name_or_class: "Union[str, type[BaseIntegration]]"
+        self, name_or_class: "str | type[BaseIntegration]"
     ) -> "Application":
         from drf_integrations import integrations
 

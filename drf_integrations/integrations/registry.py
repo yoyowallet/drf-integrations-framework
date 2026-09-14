@@ -1,6 +1,5 @@
 import inspect
 from collections.abc import Iterable
-from typing import Optional, Union
 
 from django.urls import include, path
 
@@ -28,7 +27,7 @@ class Registry:
         return self.integrations[integration_cls.name]
 
     def get_all(
-        self, *implements: Iterable[type], is_local: Optional[bool] = None
+        self, *implements: Iterable[type], is_local: bool | None = None
     ) -> set[BaseIntegration]:
         """
         Get all integrations. If ``implements`` is provided, only return integrations
@@ -52,7 +51,7 @@ class Registry:
             if is_instance_of_all(integration, implements)
         }
 
-    def get(self, name_or_class: Union[str, type[BaseIntegration]]) -> BaseIntegration:
+    def get(self, name_or_class: str | type[BaseIntegration]) -> BaseIntegration:
         """
         Get integration by name or class.
         Raises Registry.IntegrationUnavailableException

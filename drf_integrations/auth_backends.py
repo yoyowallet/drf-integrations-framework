@@ -1,5 +1,5 @@
 import logging
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from rest_framework import exceptions
@@ -30,7 +30,7 @@ class IntegrationOAuth2Authentication(OAuth2Authentication):
 
     def authenticate(
         self, request: "Request"
-    ) -> "Optional[tuple[AnyUser, models.AccessToken]]":
+    ) -> "tuple[AnyUser, models.AccessToken] | None":
         result = super().authenticate(request)
 
         if hasattr(request, "oauth2_error") and request.oauth2_error:

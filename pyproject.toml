@@ -97,17 +97,3 @@ known_first_party = "drf_integrations,example,tests"
 default_section = "THIRDPARTY"
 skip_glob = "venv/*"
 ensure_newline_before_comments = true
-
-
-[tool.flake8]
-# Extend-ignore settings, ignoring specific errors and warnings
-extend-ignore = ["E203", "E501", "W503", "B904", "B905", "B907"]
-
-# Select specific error and warning categories to check
-select = ["B", "C", "E", "F", "W", "T4", "B9"]
-
-# Maximum allowed line length (88 characters) with a note on using B950
-max-line-length = 88
-
-# Maximum allowed cyclomatic complexity for functions/methods
-max-complexity = 18

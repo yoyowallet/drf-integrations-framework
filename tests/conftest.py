@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import django
 import pytest
@@ -121,7 +121,7 @@ def get_integration():
 
 @pytest.fixture(scope="session")
 def get_application():
-    def getter(*, integration: Optional[BaseIntegration] = None):
+    def getter(*, integration: BaseIntegration | None = None):
         from tests import factories
 
         if integration:
@@ -185,11 +185,11 @@ def create_access_token():
     def creator(
         *,
         target_id: int,
-        installation_config: Optional[dict] = None,
-        application: "Optional[models.Application]" = None,
-        application_kwargs: Optional[dict] = None,
-        token: Optional[str] = None,
-        scope: Optional[str] = None,
+        installation_config: dict | None = None,
+        application: "models.Application | None" = None,
+        application_kwargs: dict | None = None,
+        token: str | None = None,
+        scope: str | None = None,
     ) -> "tuple[models.AccessToken, models.ApplicationInstallation]":
         if not application:
             application = factories.ApplicationFactory(**(application_kwargs or {}))

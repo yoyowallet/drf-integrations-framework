@@ -1,5 +1,5 @@
 import urllib.parse
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
 from django.apps import apps
@@ -129,7 +129,7 @@ class AbstractApplication(OAuthAbstractApplication):
         else:
             return _L("Pending approval")
 
-    def get_authorization_url(self, response_type="code", state=None) -> Optional[str]:
+    def get_authorization_url(self, response_type="code", state=None) -> str | None:
         if not self.redirect_uris:
             return None
         if state is None:
