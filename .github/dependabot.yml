@@ -7,3 +7,13 @@ updates:
       interval: "daily"
     pull-request-branch-name:
       separator: "_"
+
+  # Actions used by the template repository's own workflows.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
