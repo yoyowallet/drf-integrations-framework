@@ -63,7 +63,7 @@ tox = "*"
 twine = "^7.0.0"
 pytest-coverage = "^0.0"
 bumpversion = "^0.6.0"
-pillow = "^11.3.0"
+pillow = ">=11.3,<13.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
